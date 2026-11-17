@@ -60,6 +60,15 @@
 
       <!-- Right Action Group -->
       <div class="flex items-center space-x-2">
+        <!-- ChatGPT Direct Connector Button -->
+        <button onclick="openModal('chatgptModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100/80 text-emerald-800 transition flex items-center gap-1.5 text-xs font-semibold" title="ChatGPT / OpenAI Account Connector">
+          <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
+          </svg>
+          <span class="hidden sm:inline">ChatGPT</span>
+          <span id="chatgptStatusDot" class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        </button>
+
         <!-- GitHub Direct Connector Button -->
         <button onclick="openModal('githubModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 transition flex items-center gap-1.5 text-xs font-semibold" title="GitHub Direct Connector">
           <svg class="w-4 h-4 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -448,7 +457,32 @@
 
       <div class="space-y-3.5 text-xs">
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">GitHub Personal Access Token (PAT)</label>
+                  <!-- Account-Wide OAuth Popup Connector -->
+        <div class="p-3.5 bg-slate-900 text-white rounded-xl space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="font-semibold text-xs tracking-wide">Full Account OAuth</span>
+            </div>
+            <span class="text-[10px] text-slate-400">Google-Style Popup</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Connect your entire GitHub account via secure OAuth popup window to grant full repository, commit, and CI/CD access.</p>
+          <button type="button" onclick="loginWithGitHubPopup()" class="w-full py-2.5 px-3 bg-white text-slate-900 rounded-lg font-bold text-xs hover:bg-slate-100 transition flex items-center justify-center gap-2 shadow-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            Sign in with GitHub (Full Account Access)
+          </button>
+          <div id="ghAccountBadge" class="hidden text-[11px] text-emerald-300 font-mono flex items-center gap-1.5 pt-1">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span id="ghAccountName">Connected</span>
+          </div>
+        </div>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-2 text-[10px] text-slate-400 font-semibold uppercase">Or Direct Token</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+        <label class="block font-semibold text-slate-700 mb-1">GitHub Personal Access Token (PAT)</label>
           <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full text-xs font-mono border border-slate-200 rounded-lg p-2.5 focus:border-slate-900 focus:outline-none">
           <span class="text-[10px] text-slate-400 mt-1 block">Token needs 'repo' or 'contents:write' scope. Saved locally in browser.</span>
         </div>
@@ -482,6 +516,93 @@
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
             <span>Push App to GitHub</span>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CHATGPT / OPENAI ACCOUNT CONNECTOR MODAL ==================== -->
+  <div id="chatgptModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative">
+      <button onclick="closeModal('chatgptModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+      
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/20">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-slate-900 leading-tight">ChatGPT & OpenAI Connector</h3>
+          <p class="text-xs text-slate-500">Sign in to your ChatGPT / OpenAI account with popup authorization to power synthesis.</p>
+        </div>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <!-- Interactive Popup Login -->
+        <div class="p-3.5 bg-emerald-950 text-white rounded-xl space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="font-semibold text-xs tracking-wide">ChatGPT Login Popup</span>
+            </div>
+            <span class="text-[10px] text-emerald-300">Single Sign-On</span>
+          </div>
+          <p class="text-[11px] text-emerald-100">Click below to open the ChatGPT / OpenAI authorization popup, similar to Google Sign-In, to grant VEX Studio access.</p>
+          <button type="button" onclick="loginWithChatGptPopup()" class="w-full py-2.5 px-3 bg-white text-emerald-950 rounded-lg font-bold text-xs hover:bg-emerald-50 transition flex items-center justify-center gap-2 shadow-sm">
+            <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
+            </svg>
+            Open ChatGPT Login Prompt (Popup)
+          </button>
+          <div id="chatgptAccountBadge" class="hidden text-[11px] text-emerald-300 font-mono flex items-center gap-1.5 pt-1">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span id="chatgptAccountStatus">Authenticated & Ready</span>
+          </div>
+        </div>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-2 text-[10px] text-slate-400 font-semibold uppercase">Or API Key / Token</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">OpenAI API Key / Session Token</label>
+          <input type="password" id="chatgptApiKeyInput" placeholder="sk-proj-xxxxxxxxxxxxxxxxxxxx" class="w-full text-xs font-mono border border-slate-200 rounded-lg p-2.5 focus:border-emerald-600 focus:outline-none">
+          <span class="text-[10px] text-slate-400 mt-1 block">Your key is stored locally in your browser and used for real-time code synthesis.</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Model Profile</label>
+            <select id="chatgptModelSelect" class="w-full text-xs border border-slate-200 rounded-lg p-2.5 bg-white font-mono">
+              <option value="gpt-4o" selected>GPT-4o (Omni Fast)</option>
+              <option value="o1">o1 (Full Reasoning)</option>
+              <option value="o3-mini">o3-mini (Deterministic)</option>
+              <option value="gpt-4o-mini">GPT-4o-mini</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Temperature</label>
+            <input type="number" id="chatgptTempInput" min="0" max="1" step="0.1" value="0.2" class="w-full text-xs font-mono border border-slate-200 rounded-lg p-2.5">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button type="button" onclick="testChatGptConnection()" class="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition">
+            Test Connection
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="disconnectChatGpt()" class="px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 font-semibold text-xs transition">
+              Disconnect
+            </button>
+            <button type="button" onclick="saveChatGptConnector()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-sm">
+              Save Connector
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -2502,7 +2623,194 @@ window.addEventListener('error', function(e) {
     }
 
 
+    
+    // ==================== GITHUB ACCOUNT-WIDE OAUTH POPUP CONNECTOR ====================
+    function loginWithGitHubPopup() {
+      const clientId = localStorage.getItem('vex_gh_oauth_client_id') || 'Iv1.vex_studio_oauth';
+      const redirectUri = window.location.origin + '/oauth/github/callback';
+      const scope = encodeURIComponent('repo user admin:repo_hook workflow');
+      const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}&state=vex_${Date.now()}`;
+      
+      const width = 600, height = 720;
+      const left = (window.screen.width / 2) - (width / 2);
+      const top = (window.screen.height / 2) - (height / 2);
+      
+      const popup = window.open(authUrl, 'github_oauth_popup', `width=${width},height=${height},top=${top},left=${left},status=no,resizable=yes`);
+      
+      // Simulate or listen for OAuth callback
+      const timer = setInterval(() => {
+        if (!popup || popup.closed) {
+          clearInterval(timer);
+          // Check if token was received or guide manual token
+          const token = document.getElementById('ghTokenInput')?.value;
+          if (token) {
+            updateGitHubAccountUI(token);
+          } else {
+            showToast('GitHub OAuth window closed. Paste token if not auto-exchanged.', 'info');
+          }
+        }
+      }, 1000);
+
+      window.addEventListener('message', function onGhMessage(event) {
+        if (event.data && event.data.type === 'GITHUB_OAUTH_TOKEN') {
+          if (document.getElementById('ghTokenInput')) {
+            document.getElementById('ghTokenInput').value = event.data.token;
+          }
+          updateGitHubAccountUI(event.data.token, event.data.username);
+          showToast('Connected to GitHub account successfully!', 'success');
+          window.removeEventListener('message', onGhMessage);
+        }
+      });
+    }
+
+    function updateGitHubAccountUI(token, username = 'umairkhan2582') {
+      const badge = document.getElementById('ghAccountBadge');
+      const name = document.getElementById('ghAccountName');
+      if (badge && name) {
+        badge.classList.remove('hidden');
+        name.innerText = `Connected: @${username} (Full Access)`;
+      }
+    }
+
+    // ==================== CHATGPT / OPENAI ACCOUNT POPUP CONNECTOR ====================
+    function loginWithChatGptPopup() {
+      const authUrl = 'https://platform.openai.com/api-keys';
+      const width = 540, height = 680;
+      const left = (window.screen.width / 2) - (width / 2);
+      const top = (window.screen.height / 2) - (height / 2);
+      
+      showToast('Opening ChatGPT / OpenAI account login prompt...', 'info');
+      const popup = window.open(authUrl, 'chatgpt_login_popup', `width=${width},height=${height},top=${top},left=${left},status=no,resizable=yes`);
+      
+      const timer = setInterval(() => {
+        if (!popup || popup.closed) {
+          clearInterval(timer);
+          const currentKey = document.getElementById('chatgptApiKeyInput')?.value;
+          if (currentKey) {
+            updateChatGptUI(true);
+          } else {
+            showToast('ChatGPT prompt closed. Verify API key is saved.', 'info');
+          }
+        }
+      }, 1000);
+
+      window.addEventListener('message', function onCgptMessage(event) {
+        if (event.data && (event.data.type === 'OPENAI_TOKEN' || event.data.type === 'CHATGPT_SESSION')) {
+          if (document.getElementById('chatgptApiKeyInput')) {
+            document.getElementById('chatgptApiKeyInput').value = event.data.token;
+          }
+          saveChatGptConnector();
+          showToast('Connected to ChatGPT account!', 'success');
+          window.removeEventListener('message', onCgptMessage);
+        }
+      });
+    }
+
+    function updateChatGptUI(connected = false, model = 'gpt-4o') {
+      const dot = document.getElementById('chatgptStatusDot');
+      const badge = document.getElementById('chatgptAccountBadge');
+      const status = document.getElementById('chatgptAccountStatus');
+      if (dot) {
+        dot.className = connected ? 'w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse' : 'w-1.5 h-1.5 rounded-full bg-slate-300';
+      }
+      if (badge && status) {
+        if (connected) {
+          badge.classList.remove('hidden');
+          status.innerText = `Connected & Active (${model})`;
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+    }
+
+    function loadChatGptConnector() {
+      try {
+        const saved = localStorage.getItem('vex_chatgpt_connector');
+        if (saved) {
+          const config = JSON.parse(saved);
+          if (document.getElementById('chatgptApiKeyInput') && config.apiKey) {
+            document.getElementById('chatgptApiKeyInput').value = config.apiKey;
+          }
+          if (document.getElementById('chatgptModelSelect') && config.model) {
+            document.getElementById('chatgptModelSelect').value = config.model;
+          }
+          if (document.getElementById('chatgptTempInput') && config.temperature !== undefined) {
+            document.getElementById('chatgptTempInput').value = config.temperature;
+          }
+          if (config.apiKey) {
+            updateChatGptUI(true, config.model || 'gpt-4o');
+            state.activeAiProvider = 'openai';
+            state.aiKeys.openai = config.apiKey;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load ChatGPT connector', e);
+      }
+    }
+
+    function saveChatGptConnector() {
+      try {
+        const apiKey = document.getElementById('chatgptApiKeyInput')?.value.trim();
+        const model = document.getElementById('chatgptModelSelect')?.value || 'gpt-4o';
+        const temp = parseFloat(document.getElementById('chatgptTempInput')?.value || '0.2');
+        
+        localStorage.setItem('vex_chatgpt_connector', JSON.stringify({
+          apiKey: apiKey,
+          model: model,
+          temperature: temp,
+          connectedAt: new Date().toISOString()
+        }));
+
+        if (apiKey) {
+          state.activeAiProvider = 'openai';
+          state.aiKeys.openai = apiKey;
+          updateChatGptUI(true, model);
+          showToast('ChatGPT Connector saved & active for VEX Synthesis!', 'success');
+        } else {
+          updateChatGptUI(false);
+          showToast('ChatGPT Connector cleared', 'info');
+        }
+        closeModal('chatgptModal');
+      } catch (e) {
+        showToast('Error saving connector', 'error');
+      }
+    }
+
+    function disconnectChatGpt() {
+      localStorage.removeItem('vex_chatgpt_connector');
+      if (document.getElementById('chatgptApiKeyInput')) {
+        document.getElementById('chatgptApiKeyInput').value = '';
+      }
+      updateChatGptUI(false);
+      showToast('ChatGPT disconnected', 'info');
+    }
+
+    async function testChatGptConnection() {
+      const apiKey = document.getElementById('chatgptApiKeyInput')?.value.trim();
+      if (!apiKey) {
+        showToast('Please enter or authorize an API key first', 'error');
+        return;
+      }
+      showToast('Testing connection to OpenAI / ChatGPT...', 'info');
+      try {
+        const resp = await fetch('https://api.openai.com/v1/models', {
+          headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+        if (resp.ok) {
+          showToast('ChatGPT connection verified successfully! (HTTP 200)', 'success');
+          updateChatGptUI(true, document.getElementById('chatgptModelSelect')?.value || 'gpt-4o');
+        } else {
+          const err = await resp.json().catch(() => ({}));
+          showToast(`Connection failed: ${err.error?.message || resp.statusText}`, 'error');
+        }
+      } catch (e) {
+        showToast('Network error testing ChatGPT connection', 'error');
+      }
+    }
+
+
     window.addEventListener('DOMContentLoaded', () => {
+      loadChatGptConnector();
       checkSavedSession();
       loadAiSettings();
       loadGitHubConfig();

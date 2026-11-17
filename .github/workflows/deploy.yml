@@ -1,0 +1,35 @@
+name: Deploy VEX Node
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Remote VEX Node
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VEX_NODE_HOST || '167.172.215.253' }}
+          username: ${{ secrets.VEX_NODE_USER || 'root' }}
+          key: ${{ secrets.VEX_NODE_SSH_KEY }}
+          port: ${{ secrets.VEX_NODE_PORT || 22 }}
+          script: |
+            echo "Starting deployment on VEX Node $(hostname -I)..."
+            if [ -d "/root/vex" ]; then
+              cd /root/vex
+            elif [ -d "/app" ]; then
+              cd /app
+            elif [ -d "/var/www/vex" ]; then
+              cd /var/www/vex
+            else
+              git clone https://github.com/umairkhan2582/vex.git /root/vex
+              cd /root/vex
+            fi
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose down || true
+            docker compose up -d --build
+            echo "VEX Platform and JSON-RPC node successfully deployed on $(hostname -I)"
