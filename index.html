@@ -34,7 +34,7 @@
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <!-- Brand Logo (Original from live production site) -->
-      <div class="flex items-center gap-2.5 cursor-pointer select-none" onclick="switchView(\'home\')" title="Return to VEX Home">
+      <div class="flex items-center gap-2.5 cursor-pointer select-none" onclick="switchView('home')">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4l7 16 2-5 5-2L4 4z"></path>
@@ -49,7 +49,8 @@
 
       <!-- Navigation Links (Desktop) -->
       <nav class="hidden md:flex items-center space-x-1 text-sm font-medium text-slate-600">
-        <button onclick="switchView('builder')" id="nav-builder" class="px-3 py-1.5 rounded-lg text-indigo-600 bg-indigo-50/80 font-semibold transition">Builder</button>
+        <button onclick="switchView('home')" id="nav-home" class="px-3 py-1.5 rounded-lg text-indigo-600 bg-indigo-50/80 font-semibold transition">Home</button>
+        <button onclick="switchView('builder')" id="nav-builder" class="px-3 py-1.5 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition">Builder</button>
         <button onclick="setPlaygroundMode('full')" class="px-3 py-1.5 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition flex items-center gap-1.5">
           <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
           Full Preview
@@ -61,11 +62,11 @@
       <!-- Right Action Group -->
       <div class="flex items-center space-x-2">
         <!-- ChatGPT Direct Connector Button -->
-        <button onclick="openModal('chatgptModal')" id="chatgptHeaderBtn" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 transition flex items-center gap-1.5 text-xs font-semibold shrink-0" title="ChatGPT & OpenAI Direct Connector">
+        <button id="chatgptHeaderBtn" onclick="openModal('chatgptModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100/80 text-emerald-800 transition flex items-center gap-1.5 text-xs font-semibold" title="ChatGPT / OpenAI Account Connector">
           <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
             <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
           </svg>
-          <span class="hidden sm:inline" id="chatgptStatusLabel">ChatGPT</span>
+          <span class="hidden sm:inline">ChatGPT</span>
           <span id="chatgptStatusDot" class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
         </button>
 
@@ -390,15 +391,6 @@
             </div>
             <span class="text-[10px] text-indigo-600 font-bold" id="drawerGithubBadge">Configure</span>
           </button>
-          <button onclick="closeDrawer(); openModal('chatgptModal');" class="w-full p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 flex items-center justify-between text-slate-700 font-semibold transition">
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
-              </svg>
-              <span>ChatGPT Direct Connector</span>
-            </div>
-            <span class="text-[10px] text-emerald-600 font-bold" id="drawerChatgptBadge">Configure</span>
-          </button>
           <button onclick="closeDrawer(); openModal('aiModal');" class="w-full p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 flex items-center justify-between text-slate-700 font-semibold transition">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -439,10 +431,10 @@
     </div>
 
     <!-- Drawer Footer -->
-    <div class="p-4 border-t border-slate-200 bg-slate-50" id="drawerBottomAuthArea">
-      <button onclick="closeDrawer(); openModal('otpModal')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-        <span>Sign In / Create Account</span>
+    <div id="drawerBottomAuthArea" class="p-4 border-t border-slate-200 bg-slate-50">
+      <button onclick="logout(); closeDrawer();" class="w-full py-2.5 bg-white border border-slate-200 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 rounded-xl text-xs font-bold text-slate-700 transition flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        <span>Sign Out Session</span>
       </button>
     </div>
   </aside>
@@ -545,83 +537,60 @@
           </svg>
         </div>
         <div>
-          <h3 class="text-base font-bold text-slate-900 leading-tight">ChatGPT & OpenAI Direct Connector</h3>
-          <p class="text-xs text-slate-500">Connect your OpenAI account to synthesize live applications using GPT-4o and o-series models.</p>
+          <h3 class="text-base font-bold text-slate-900 leading-tight">ChatGPT & OpenAI Engine</h3>
+          <p class="text-xs text-slate-500">Connect your OpenAI account to generate bespoke apps with live LLMs.</p>
         </div>
       </div>
 
-      <div class="space-y-3.5 text-xs">
-        <!-- Account-Wide Dark Integration Card -->
-        <div class="p-4 bg-slate-900 text-white rounded-2xl space-y-3">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span id="chatgptStatusDotPulse" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-              <span class="font-bold text-xs tracking-wide">Lovable-Style ChatGPT Integration</span>
-            </div>
-            <span id="chatgptScopeBadge" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-emerald-400 font-mono font-semibold">BYOK Live</span>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">Connect your OpenAI API key directly to synthesize zero-latency frontend and backend registers via GPT-4o, GPT-4o-mini, or o1-mini.</p>
+      <div class="space-y-4 text-xs">
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-[11px] leading-relaxed">
+          <strong class="font-bold">Why doesn't OpenAI automatically redirect back?</strong><br>
+          OpenAI's platform does not support browser OAuth redirects (like Google Sign-In) for third-party tools. To connect, open your OpenAI Keys page, generate or copy a key, and paste it below.
+        </div>
 
-          <!-- Connected State Card -->
-          <div id="chatgptConnectedCard" class="hidden bg-slate-800/80 border border-slate-700 p-3 rounded-xl flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-full bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xs">
-                AI
-              </div>
-              <div>
-                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span id="chatgptConnectedModelName">GPT-4o Mini</span>
-                  <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">Connected</span>
-                </div>
-                <div class="text-[10px] text-slate-400 font-mono" id="chatgptMaskedKeyDisplay">sk-proj-••••••••••••</div>
-              </div>
-            </div>
-            <button type="button" onclick="disconnectChatGpt()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold px-2 py-1 rounded hover:bg-slate-700/60 transition cursor-pointer">
-              Disconnect
+        <!-- Step 1: Open OpenAI Keys -->
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+          <div>
+            <div class="font-bold text-slate-800 text-xs">Step 1: Open Your OpenAI Account</div>
+            <div class="text-[11px] text-slate-500">Log in and create or copy an API key</div>
+          </div>
+          <button type="button" onclick="loginWithChatGptPopup()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
+            <span>Open Keys</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Step 2: Paste Key -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-slate-800">Step 2: Paste OpenAI API Key</label>
+            <button onclick="pasteFromClipboard()" class="text-[11px] text-indigo-600 hover:underline font-semibold flex items-center gap-1">
+              <i class="fa-regular fa-paste text-[10px]"></i>
+              <span>Paste from Clipboard</span>
             </button>
           </div>
-
-          <!-- Disconnected Actions -->
-          <div id="chatgptConnectActions" class="space-y-2">
-            <a href="https://platform.openai.com/api-keys" target="_blank" class="w-full py-2.5 px-3 bg-white text-slate-900 rounded-xl font-bold text-xs hover:bg-slate-100 transition flex items-center justify-center gap-2 shadow-sm text-center cursor-pointer">
-              <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
-              </svg>
-              <span>1. Open OpenAI API Keys Dashboard ↗</span>
-            </a>
-            <div class="flex gap-2">
-              <input type="password" id="chatgptApiKeyInput" placeholder="Paste OpenAI Key (sk-proj-...)" class="flex-1 text-xs font-mono bg-slate-950 border border-slate-700 text-white rounded-xl p-2.5 focus:border-emerald-400 focus:outline-none">
-              <button type="button" onclick="saveChatGptConnector()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition cursor-pointer">
-                Connect
-              </button>
-            </div>
-            <span class="text-[10px] text-slate-400 block">Encrypted locally in browser localStorage. Never sent to intermediate servers.</span>
+          <div class="relative">
+            <input type="password" id="chatgptApiKeyInput" placeholder="sk-proj-..." class="w-full text-xs font-mono border border-slate-200 rounded-xl p-2.5 pr-20 focus:outline-none focus:border-emerald-600 bg-white">
+            <button type="button" onclick="togglePasswordVisibility('chatgptApiKeyInput')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-[11px] font-medium">Show</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Target Model</label>
-            <select id="chatgptModelSelect" onchange="saveChatGptConnector()" class="w-full text-xs border border-slate-200 rounded-lg p-2.5 bg-white focus:border-emerald-600 focus:outline-none">
-              <option value="gpt-4o-mini">gpt-4o-mini (Zero-latency, Low Gas)</option>
-              <option value="gpt-4o">gpt-4o (High Reasoning, Enterprise)</option>
-              <option value="o1-mini">o1-mini (Deep Logic Synthesis)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Verification Status</label>
-            <div class="flex items-center h-10 px-3 border border-slate-200 rounded-lg bg-slate-50 text-[11px] font-mono text-slate-600" id="chatgptVerificationStatus">
-              Ready to verify
-            </div>
-          </div>
+        <!-- Model Selection -->
+        <div>
+          <label class="block font-bold text-slate-800 mb-1">Select Synthesis Model</label>
+          <select id="chatgptModelSelect" class="w-full text-xs border border-slate-200 rounded-xl p-2.5 bg-white focus:outline-none focus:border-emerald-600">
+            <option value="gpt-4o-mini">gpt-4o-mini (Fast & Recommended)</option>
+            <option value="gpt-4o">gpt-4o (High Reasoning & Accuracy)</option>
+            <option value="o1-mini">o1-mini (Complex Architecture Logic)</option>
+          </select>
         </div>
 
-        <div class="pt-2 flex items-center justify-between gap-3">
-          <button type="button" onclick="disconnectChatGpt()" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition cursor-pointer">
-            Clear Key
+        <div class="pt-2 flex items-center justify-between gap-3 border-t border-slate-100">
+          <button type="button" onclick="disconnectChatGpt()" class="text-rose-600 hover:text-rose-800 font-semibold text-xs">
+            Disconnect
           </button>
-          <button type="button" onclick="saveChatGptConnector()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition shadow-md shadow-emerald-200 flex items-center justify-center gap-1.5 cursor-pointer">
-            <span>Activate ChatGPT Engine</span>
+          <button type="button" onclick="saveChatGptKeyDirect()" class="py-2.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-100 transition">
+            Save & Activate Engine
           </button>
         </div>
       </div>
@@ -1034,37 +1003,23 @@
       const emailEl = document.getElementById('drawerUserEmail');
       const statusEl = document.getElementById('drawerUserStatus');
       const badgeEl = document.getElementById('drawerAuthBadge');
-      const bottomBtn = document.getElementById('drawerBottomAuthArea');
-
-      if (state.isLoggedIn && email) {
-        if (emailEl) emailEl.innerText = email;
-        if (statusEl) statusEl.innerText = 'Verified Developer';
-        if (badgeEl) {
+      if (emailEl) emailEl.innerText = email || (state.isLoggedIn ? 'developer@vex.io' : 'Guest Session');
+      if (statusEl) statusEl.innerText = state.isLoggedIn ? 'Verified Developer' : 'Guest Developer (Not signed in)';
+      const drawerAuthArea = document.getElementById('drawerBottomAuthArea');
+      if (drawerAuthArea) {
+        if (state.isLoggedIn) {
+          drawerAuthArea.innerHTML = '<button onclick="logout(); closeDrawer();" class="w-full py-2.5 bg-white border border-slate-200 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 rounded-xl text-xs font-bold text-slate-700 transition flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span>Sign Out Session</span></button>';
+        } else {
+          drawerAuthArea.innerHTML = '<button onclick="closeDrawer(); openModal(\'otpModal\');" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span>Sign In to VEX</span></button>';
+        }
+      }
+      if (badgeEl) {
+        if (state.isLoggedIn) {
           badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800';
-          badgeEl.innerText = 'Active';
-        }
-        if (bottomBtn) {
-          bottomBtn.innerHTML = `
-            <button onclick="logout()" class="w-full py-2.5 px-4 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-              <span>Sign Out (${escapeHtml(email)})</span>
-            </button>
-          `;
-        }
-      } else {
-        if (emailEl) emailEl.innerText = 'Guest Developer (Not signed in)';
-        if (statusEl) statusEl.innerText = 'Guest Account';
-        if (badgeEl) {
+          badgeEl.innerText = 'Verified';
+        } else {
           badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800';
-          badgeEl.innerText = 'Guest';
-        }
-        if (bottomBtn) {
-          bottomBtn.innerHTML = `
-            <button onclick="closeDrawer(); openModal('otpModal');" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-              <span>Sign In / Create Account</span>
-            </button>
-          `;
+          badgeEl.innerText = 'Unverified';
         }
       }
     }
@@ -1329,15 +1284,7 @@
 
         const active = this.getActive();
         if (active) {
-          if (state.isLoggedIn) {
-            this.switch(active.id);
-          } else {
-            // Render drawer & projects so they are ready, but stay on Hero section
-            this.renderDrawerProjects();
-            this.renderModalProjects();
-            document.getElementById('currentProjectTitle').innerText = active.title;
-            updateCodeAndPreview(active.code, active.vexCode);
-          }
+          this.switch(active.id);
         }
       }
     };
@@ -1498,7 +1445,6 @@
     async function executeSynthesis(promptText) {
       const prompt = (promptText || '').trim();
       if (!prompt) return;
-      switchView('builder');
       state.currentPrompt = prompt;
 
       let activeProj = ProjectStore.getActive();
@@ -1891,19 +1837,18 @@ window.addEventListener('error', function(e) {
     }
 
     function updateAuthUi(loggedIn, email) {
-      const btn = document.getElementById('authBtn') || document.getElementById('navAuthBtn');
+      const btn = document.getElementById('navAuthBtn') || document.getElementById('authBtn');
       if (btn) {
         if (loggedIn) {
           btn.innerText = 'Sign Out';
           btn.onclick = logout;
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition shadow-xs';
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition';
         } else {
           btn.innerText = 'Sign In';
           btn.onclick = () => openModal('otpModal');
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 transition shadow-xs';
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-2xs transition';
         }
       }
-      updateDrawerProfile(email);
     }
 
     function logout() {
@@ -2082,20 +2027,22 @@ window.addEventListener('error', function(e) {
     }
 
     function switchView(view) {
-      const hero = document.getElementById('heroSection');
-      const playground = document.getElementById('playgroundSection');
-      const navBuilder = document.getElementById('nav-builder');
-
       if (view === 'builder') {
-        hero?.classList.add('hidden');
-        playground?.classList.remove('hidden');
-        playground?.classList.add('flex');
-        if (navBuilder) navBuilder.className = 'px-3 py-1.5 rounded-lg text-indigo-600 bg-indigo-50/80 font-semibold transition';
-      } else if (view === 'home' || view === 'hero') {
-        playground?.classList.add('hidden');
-        playground?.classList.remove('flex');
-        hero?.classList.remove('hidden');
-        if (navBuilder) navBuilder.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition';
+        document.getElementById('playgroundSection')?.classList.remove('hidden');
+        document.getElementById('playgroundSection')?.classList.add('flex');
+        document.getElementById('heroSection')?.classList.add('hidden');
+        document.getElementById('nav-builder')?.classList.add('text-indigo-600', 'bg-indigo-50/80', 'font-semibold');
+        document.getElementById('nav-builder')?.classList.remove('hover:text-slate-900', 'hover:bg-slate-100');
+        document.getElementById('nav-home')?.classList.remove('text-indigo-600', 'bg-indigo-50/80', 'font-semibold');
+        document.getElementById('nav-home')?.classList.add('hover:text-slate-900', 'hover:bg-slate-100');
+      } else if (view === 'home') {
+        document.getElementById('playgroundSection')?.classList.add('hidden');
+        document.getElementById('playgroundSection')?.classList.remove('flex');
+        document.getElementById('heroSection')?.classList.remove('hidden');
+        document.getElementById('nav-home')?.classList.add('text-indigo-600', 'bg-indigo-50/80', 'font-semibold');
+        document.getElementById('nav-home')?.classList.remove('hover:text-slate-900', 'hover:bg-slate-100');
+        document.getElementById('nav-builder')?.classList.remove('text-indigo-600', 'bg-indigo-50/80', 'font-semibold');
+        document.getElementById('nav-builder')?.classList.add('hover:text-slate-900', 'hover:bg-slate-100');
       }
     }
 
@@ -3007,48 +2954,20 @@ window.addEventListener('error', function(e) {
       saveChatGptConnector();
     }
 
-    function updateChatGptUI(connected = false, model = 'gpt-4o-mini', maskedKey = '') {
+    function updateChatGptUI(connected = false, model = 'gpt-4o-mini') {
       const dot = document.getElementById('chatgptStatusDot');
-      const pulseDot = document.getElementById('chatgptStatusDotPulse');
-      const label = document.getElementById('chatgptStatusLabel');
-      const connectedCard = document.getElementById('chatgptConnectedCard');
-      const connectActions = document.getElementById('chatgptConnectActions');
-      const modelName = document.getElementById('chatgptConnectedModelName');
-      const keyDisplay = document.getElementById('chatgptMaskedKeyDisplay');
-      const verifyStatus = document.getElementById('chatgptVerificationStatus');
-      const drawerBadge = document.getElementById('drawerChatgptBadge');
-
+      const badge = document.getElementById('chatgptAccountBadge');
+      const status = document.getElementById('chatgptAccountStatus');
       if (dot) {
         dot.className = connected ? 'w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse' : 'w-1.5 h-1.5 rounded-full bg-slate-300';
       }
-      if (pulseDot) {
-        pulseDot.className = connected ? 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping' : 'w-2.5 h-2.5 rounded-full bg-slate-400';
-      }
-      if (label) {
-        label.innerText = connected ? ('ChatGPT (' + model + ')') : 'ChatGPT';
-      }
-      if (connectedCard && connectActions) {
+      if (badge && status) {
         if (connected) {
-          connectedCard.classList.remove('hidden');
-          connectActions.classList.add('hidden');
+          badge.classList.remove('hidden');
+          status.innerText = `ChatGPT Connected (${model})`;
         } else {
-          connectedCard.classList.add('hidden');
-          connectActions.classList.remove('hidden');
+          badge.classList.add('hidden');
         }
-      }
-      if (modelName) {
-        modelName.innerText = model.toUpperCase();
-      }
-      if (keyDisplay && maskedKey) {
-        keyDisplay.innerText = maskedKey;
-      }
-      if (verifyStatus) {
-        verifyStatus.innerText = connected ? 'Verified Active (BYOK)' : 'Disconnected';
-        verifyStatus.className = connected ? 'flex items-center h-10 px-3 border border-emerald-200 rounded-lg bg-emerald-50 text-[11px] font-mono text-emerald-700 font-bold' : 'flex items-center h-10 px-3 border border-slate-200 rounded-lg bg-slate-50 text-[11px] font-mono text-slate-600';
-      }
-      if (drawerBadge) {
-        drawerBadge.innerText = connected ? 'Active' : 'Configure';
-        drawerBadge.className = connected ? 'text-[10px] text-emerald-600 font-bold' : 'text-[10px] text-slate-400';
       }
     }
 
@@ -3073,8 +2992,7 @@ window.addEventListener('error', function(e) {
             document.getElementById('chatgptModelSelect').value = model;
           }
           if (apiKey) {
-            const masked = apiKey.length > 12 ? apiKey.substring(0, 7) + '••••••••' + apiKey.slice(-4) : '••••••••••••';
-            updateChatGptUI(true, model, masked);
+            updateChatGptUI(true, model);
             state.activeAiProvider = 'openai';
             state.aiKeys.openai = apiKey;
           }
@@ -3100,8 +3018,7 @@ window.addEventListener('error', function(e) {
 
           state.activeAiProvider = 'openai';
           state.aiKeys.openai = apiKey;
-          const masked = apiKey.length > 12 ? apiKey.substring(0, 7) + '••••••••' + apiKey.slice(-4) : '••••••••••••';
-          updateChatGptUI(true, model, masked);
+          updateChatGptUI(true, model);
           showToast('ChatGPT engine active with ' + model + '!', 'success');
         } else {
           disconnectChatGpt();
@@ -3124,11 +3041,6 @@ window.addEventListener('error', function(e) {
       showToast('ChatGPT engine disconnected', 'info');
       closeModal('chatgptModal');
     }
-      if (state.aiKeys) state.aiKeys.openai = '';
-      updateChatGptUI(false);
-      showToast('ChatGPT engine disconnected', 'info');
-      closeModal('chatgptModal');
-    }
 
     window.addEventListener('DOMContentLoaded', () => {
       loadChatGptConnector();
@@ -3136,6 +3048,7 @@ window.addEventListener('error', function(e) {
       loadAiSettings();
       loadGitHubConfig();
       ProjectStore.init();
+      switchView('home');
     });
 
   </script>
