@@ -1886,7 +1886,6 @@ window.addEventListener('error', function(e) {
     }
 
     function closeModal(id) {
-      if (id === 'otpModal' && !state.isLoggedIn) return;
       document.getElementById(id)?.classList.add('hidden');
     }
 
@@ -3595,7 +3594,6 @@ window.addEventListener('error', function(e) {
       loadAiSettings();
       loadGitHubConfig();
       ProjectStore.init();
-      if (!state.isLoggedIn) openModal('otpModal');
       switchView('home');
     });
 
