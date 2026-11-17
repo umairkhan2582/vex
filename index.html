@@ -32,9 +32,9 @@
 
   <!-- Top Navbar -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 min-h-16 flex items-center justify-between gap-1">
       <!-- Brand Logo (Original from live production site) -->
-      <div class="flex items-center gap-2.5 cursor-pointer select-none" onclick="switchView('home')">
+      <div class="flex items-center gap-2.5 cursor-pointer select-none shrink-0" onclick="switchView('home')">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4l7 16 2-5 5-2L4 4z"></path>
@@ -55,12 +55,12 @@
           <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
           Full Preview
         </button>
-        <button onclick="openModal('projectsModal')" class="px-3 py-1.5 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition">Projects (<span id="projectCount">4</span>)</button>
+        <button onclick="openModal('projectsModal')" class="px-3 py-1.5 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition">Projects (<span id="projectCount">0</span>)</button>
         <button onclick="openModal('docsModal')" class="px-3 py-1.5 rounded-lg hover:text-slate-900 hover:bg-slate-100 transition">Docs</button>
       </nav>
 
       <!-- Right Action Group -->
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
         <!-- ChatGPT Direct Connector Button -->
         <button id="chatgptHeaderBtn" onclick="openModal('chatgptModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100/80 text-emerald-800 transition flex items-center gap-1.5 text-xs font-semibold" title="ChatGPT / OpenAI Account Connector">
           <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
@@ -71,21 +71,21 @@
         </button>
 
         <!-- GitHub Direct Connector Button -->
-        <button onclick="openModal('githubModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 transition flex items-center gap-1.5 text-xs font-semibold" title="GitHub Direct Connector">
+        <button onclick="openModal('githubModal')" class="hidden sm:flex p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 transition items-center gap-1.5 text-xs font-semibold" title="GitHub Direct Connector">
           <svg class="w-4 h-4 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
           <span class="hidden sm:inline" id="githubStatusLabel">GitHub</span>
           <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="githubStatusDot"></span>
         </button>
 
         <!-- AI Settings -->
-        <button onclick="openModal('aiModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 transition flex items-center gap-1.5 text-xs font-semibold" title="AI Connections">
+        <button onclick="openModal('aiModal')" class="hidden sm:flex p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 transition items-center gap-1.5 text-xs font-semibold" title="AI Connections">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span class="hidden sm:inline">AI</span>
         </button>
 
         <!-- Auth Button -->
         <div id="userProfileArea" class="flex items-center pl-1">
-          <button id="authBtn" onclick="openModal('otpModal')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition shadow-sm">
+          <button id="authBtn" onclick="openModal('otpModal')" class="text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-1.5 whitespace-nowrap rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition shadow-sm">
             Sign In
           </button>
         </div>
@@ -335,7 +335,7 @@
         </div>
         <div>
           <span class="font-extrabold text-sm text-slate-900 block leading-tight">VEX Studio Suite</span>
-          <span class="text-[11px] text-slate-500" id="drawerUserStatus">Guest Developer (Not signed in)</span>
+          <span class="text-[11px] text-slate-500" id="drawerUserStatus">Sign in required</span>
         </div>
       </div>
       <button onclick="closeDrawer()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition">
@@ -347,12 +347,12 @@
     <div class="p-4 bg-gradient-to-br from-indigo-50/60 to-slate-50 border-b border-slate-100">
       <div class="flex items-center justify-between mb-2">
         <span class="text-xs font-bold text-slate-700">Session Account</span>
-        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-600" id="drawerAuthBadge">Guest</span>
+        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-600" id="drawerAuthBadge">Signed out</span>
       </div>
-      <div class="text-xs font-mono font-semibold text-slate-900 truncate mb-1" id="drawerUserEmail">Not Signed In (Guest Session)</div>
+      <div class="text-xs font-mono font-semibold text-slate-900 truncate mb-1" id="drawerUserEmail">Sign in required</div>
       <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-        <span>Node: 167.172.215.253</span>
-        <span class="text-emerald-600 font-bold">Online (Port 80)</span>
+        <span>VEX Node</span>
+        <span id="drawerNodeStatus" class="text-slate-500 font-semibold">Status unknown</span>
       </div>
     </div>
 
@@ -390,6 +390,9 @@
               <span>GitHub Direct Connector</span>
             </div>
             <span class="text-[10px] text-indigo-600 font-bold" id="drawerGithubBadge">Configure</span>
+          </button>
+          <button onclick="closeDrawer(); openModal('chatgptModal');" class="w-full p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 flex items-center justify-between text-emerald-800 font-semibold transition">
+            <span>ChatGPT / OpenAI Connector</span><span id="drawerChatGptBadge" class="text-[10px] text-slate-500">Configure</span>
           </button>
           <button onclick="closeDrawer(); openModal('aiModal');" class="w-full p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 flex items-center justify-between text-slate-700 font-semibold transition">
             <div class="flex items-center gap-2">
@@ -687,12 +690,6 @@
         </button>
       </div>
 
-      <!-- Common Guest / Bypass Link -->
-      <div class="mt-4 pt-3 border-t border-slate-100 text-center">
-        <button onclick="continueAsGuest()" class="text-xs text-slate-500 hover:text-indigo-600 font-medium">
-          Skip verification & continue as Developer Guest →
-        </button>
-      </div>
     </div>
   </div>
 
@@ -968,24 +965,37 @@
     // ------------------------------------------
     // 1. Session & Auth State Persistence
     // ------------------------------------------
+    function requireSignIn() {
+      if (state.isLoggedIn && state.userEmail) return true;
+      openModal('otpModal');
+      return false;
+    }
+
     function checkSavedSession() {
       try {
         const saved = localStorage.getItem('vex_auth_session');
         if (saved) {
           const sess = JSON.parse(saved);
-          if (sess && sess.isLoggedIn && sess.userEmail) {
+          if (sess && sess.isLoggedIn && sess.userEmail && !/^guest(?:@|$)/i.test(sess.userEmail)) {
             state.isLoggedIn = true;
             state.userEmail = sess.userEmail;
             updateAuthUi(true, sess.userEmail);
             updateDrawerProfile(sess.userEmail);
+          } else if (sess) {
+            localStorage.removeItem('vex_auth_session');
           }
         }
-      } catch (e) {
-        console.warn('Session read error:', e);
-      }
+      } catch (e) {}
     }
 
     function saveAuthSession(email) {
+      if (!email || /^guest(?:@|$)/i.test(email)) {
+        state.isLoggedIn = false;
+        state.userEmail = '';
+        localStorage.removeItem('vex_auth_session');
+        openModal('otpModal');
+        return;
+      }
       state.isLoggedIn = true;
       state.userEmail = email;
       try {
@@ -997,6 +1007,7 @@
       } catch (e) {}
       updateAuthUi(true, email);
       updateDrawerProfile(email);
+      if (typeof ProjectStore !== 'undefined') ProjectStore.init();
     }
 
     function updateDrawerProfile(email) {
@@ -1004,10 +1015,10 @@
       const statusEl = document.getElementById('drawerUserStatus');
       const badgeEl = document.getElementById('drawerAuthBadge');
       if (emailEl) {
-        emailEl.innerText = state.isLoggedIn ? (email || state.userEmail || 'developer@vex.io') : 'Not Signed In (Guest Session)';
+        emailEl.innerText = state.isLoggedIn ? (email || state.userEmail || 'developer@vex.io') : 'Sign in required';
       }
       if (statusEl) {
-        statusEl.innerText = state.isLoggedIn ? 'Verified Developer' : 'Guest Developer (Not signed in)';
+        statusEl.innerText = state.isLoggedIn ? 'Signed in' : 'Sign in required';
       }
       const drawerAuthArea = document.getElementById('drawerBottomAuthArea');
       if (drawerAuthArea) {
@@ -1020,21 +1031,29 @@
       if (badgeEl) {
         if (state.isLoggedIn) {
           badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800';
-          badgeEl.innerText = 'Verified';
+          badgeEl.innerText = 'Signed in';
         } else {
           badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800';
-          badgeEl.innerText = 'Unverified';
+          badgeEl.innerText = 'Sign in required';
         }
       }
     }
 
     function openDrawer() {
+      if (!requireSignIn()) return;
       const d = document.getElementById('appDrawer');
       const o = document.getElementById('appDrawerOverlay');
       if (d) d.classList.remove('translate-x-full');
       if (o) o.classList.remove('hidden');
       updateDrawerProfile(state.userEmail);
       ProjectStore.renderDrawerProjects();
+      const chatGptBadge = document.getElementById('drawerChatGptBadge');
+      if (chatGptBadge) chatGptBadge.innerText = localStorage.getItem('vex_chatgpt_key') ? 'Connected' : 'Configure';
+      const status = document.getElementById('drawerNodeStatus');
+      if (status) {
+        status.innerText = 'Not checked';
+        status.className = 'text-slate-500 font-semibold';
+      }
     }
 
     function closeDrawer() {
@@ -1048,12 +1067,19 @@
     // 2. Project Memory & Multi-Project Store
     // ------------------------------------------
     const ProjectStore = {
-      STORAGE_KEY: 'vex_projects_v5',
-      ACTIVE_KEY: 'vex_active_project_id',
+      STORAGE_KEY: 'vex_projects_v6_',
+      ACTIVE_KEY: 'vex_active_project_id_v6_',
+
+      accountKey(prefix) {
+        if (!state.isLoggedIn || !state.userEmail) return null;
+        return prefix + encodeURIComponent(state.userEmail.trim().toLowerCase());
+      },
 
       getAll() {
         try {
-          const data = localStorage.getItem(this.STORAGE_KEY);
+          const key = this.accountKey(this.STORAGE_KEY);
+          if (!key) return [];
+          const data = localStorage.getItem(key);
           return data ? JSON.parse(data) : [];
         } catch(e) {
           return [];
@@ -1062,18 +1088,22 @@
 
       saveAll(projects) {
         try {
-          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(projects));
+          const key = this.accountKey(this.STORAGE_KEY);
+          if (!key) return;
+          localStorage.setItem(key, JSON.stringify(projects));
         } catch(e) {
           console.error('ProjectStore save error:', e);
         }
       },
 
       getActiveId() {
-        return localStorage.getItem(this.ACTIVE_KEY);
+        const key = this.accountKey(this.ACTIVE_KEY);
+        return key ? localStorage.getItem(key) : null;
       },
 
       setActiveId(id) {
-        localStorage.setItem(this.ACTIVE_KEY, id);
+        const key = this.accountKey(this.ACTIVE_KEY);
+        if (key) localStorage.setItem(key, id);
       },
 
       getActive() {
@@ -1088,6 +1118,7 @@
       },
 
       create(title, initialPrompt = '', initialCode = '', initialMessages = []) {
+        if (!requireSignIn()) return null;
         const projects = this.getAll();
         const newProj = {
           id: 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
@@ -1135,7 +1166,8 @@
           if (projects.length > 0) {
             this.switch(projects[0].id);
           } else {
-            localStorage.removeItem(this.ACTIVE_KEY);
+            const activeKey = this.accountKey(this.ACTIVE_KEY);
+            if (activeKey) localStorage.removeItem(activeKey);
             this.init();
           }
         }
@@ -1144,6 +1176,7 @@
       },
 
       switch(id) {
+        if (!requireSignIn()) return;
         const projects = this.getAll();
         const proj = projects.find(p => p.id === id);
         if (!proj) return;
@@ -1188,6 +1221,8 @@
         const activeId = this.getActiveId();
 
         container.innerHTML = '';
+        const countBadge = document.getElementById('projectCount');
+        if (countBadge) countBadge.innerText = projects.length;
         if (projects.length === 0) {
           container.innerHTML = '<div class="p-3 text-center text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-[11px]">No active projects yet.<br><span class="text-indigo-600 font-semibold cursor-pointer" onclick="closeDrawer(); createNewProjectPrompt();">+ Create your first app</span></div>';
           return;
@@ -1265,34 +1300,20 @@
       },
 
       init() {
-        ['vex_projects_v1', 'vex_projects_v2', 'vex_projects_v3', 'vex_projects_v4'].forEach(k => {
-          try { localStorage.removeItem(k); } catch(e) {}
-        });
-        let projects = this.getAll().filter(p => p && p.title && !p.title.includes('CryptoPulse') && !p.title.includes('SocialSphere') && !p.title.includes('theseven'));
+        if (!state.isLoggedIn || !state.userEmail) {
+          this.renderDrawerProjects();
+          this.renderModalProjects();
+          return;
+        }
+        // Legacy v5 storage was shared across sessions; keep it isolated from account-scoped projects.
+        let projects = this.getAll().filter(p => p && p.title &&
+          !['CryptoPulse', 'SocialSphere', 'theseven', 'VEX Enterprise Workspace & CRM', 'SaaS Billing & Subscription Manager', 'VEX Enterprise CRM & Pipeline', 'SaaS Billing & Subscriptions'].some(demo => p.title.includes(demo)));
         this.saveAll(projects);
-        if (projects.length === 0) {
-          // Seed initial rich enterprise starter projects
-          const p1 = this.create(
-            'VEX Enterprise Workspace & CRM',
-            'Full enterprise deal pipeline, team quotas, live lead scoring, activity streams, and interactive analytics dashboard',
-            generateCrmAppCode(),
-            [
-              { role: 'user', content: 'Synthesize an Enterprise CRM with deal stages, revenue charts, lead filtering, and deal creation' },
-              { role: 'assistant', content: 'I compiled VEX Enterprise CRM into 1,024 dynamic registers (@server #0001 through @ui #1024) featuring a live Kanban deal pipeline, lead scoring matrix, revenue forecasting, and responsive modals.' }
-            ]
-          );
 
-          const p2 = this.create(
-            'SaaS Billing & Subscription Manager',
-            'Tier billing calculator, MRR telemetry, seat management, automated invoice generation, and plan switching',
-            generateBillingAppCode(),
-            [
-              { role: 'user', content: 'Build a SaaS billing and subscription portal with dynamic tiers, seat pricing, and live invoice previews' },
-              { role: 'assistant', content: 'I synthesized the SaaS Subscription Manager across registers #0001-#1024 with interactive tier selectors, prorated seat calculations, and instant downloadable invoice templates.' }
-            ]
-          );
-
-          this.setActiveId(p1.id);
+        if (!state.isLoggedIn) {
+          this.renderDrawerProjects();
+          this.renderModalProjects();
+          return;
         }
 
         const active = this.getActive();
@@ -1303,6 +1324,7 @@
     };
 
     function createNewProjectPrompt() {
+      if (!requireSignIn()) return;
       const name = prompt('Enter a name for your new application:', 'My Custom App');
       if (name === null) return;
       const proj = ProjectStore.create(name.trim() || 'New App', '', '', [
@@ -1313,6 +1335,7 @@
     }
 
     function loadProjectPreset(preset) {
+      if (!requireSignIn()) return;
       if (preset === 'crm') {
         const p = ProjectStore.create('VEX Enterprise CRM & Pipeline', 'Enterprise deal pipeline and revenue forecasting', generateCrmAppCode(), [
           { role: 'user', content: 'Synthesize Enterprise CRM with deal stages' },
@@ -1456,6 +1479,7 @@
     // Real-Time LLM / Autonomous AI Synthesis Engine
     // ------------------------------------------
     async function executeSynthesis(promptText) {
+      if (!requireSignIn()) { state.currentPrompt = (promptText || '').trim(); return; }
       const prompt = (promptText || '').trim();
       if (!prompt) return;
       state.currentPrompt = prompt;
@@ -1562,6 +1586,8 @@ RULES:
         generatedHtml = generateCustomAppCode(prompt);
       }
 
+      generatedHtml = normalizeGeneratedPreview(generatedHtml, prompt);
+
       // Generate 1,024 Virtual Registers
       const vexRegs = generateVexRegisters(appTitle, prompt, generatedHtml);
 
@@ -1596,6 +1622,16 @@ RULES:
     // ------------------------------------------
     // 6. Live Sandbox Compilation & Error Trapping
     // ------------------------------------------
+    function normalizeGeneratedPreview(output, prompt) {
+      let content = String(output || '').trim();
+      const fenced = content.match(/^```(?:html|tsx|jsx|ts|js|css)?\s*([\s\S]*?)\s*```$/i);
+      if (fenced) content = fenced[1].trim();
+      if (/^<!doctype html|^<html[\s>]/i.test(content)) return content;
+      const escaped = escapeHtml(content || 'No generated code was returned.');
+      const title = escapeHtml((prompt || 'Generated code preview').slice(0, 80));
+      return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>body{margin:0;background:#f8fafc;color:#0f172a;font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}header{padding:18px 24px;background:white;border-bottom:1px solid #e2e8f0;font:600 14px system-ui}main{padding:24px;max-width:1100px;margin:auto}p{font:14px/1.6 system-ui;color:#475569}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:20px;background:#0f172a;color:#e2e8f0;border-radius:12px;overflow:auto}</style></head><body><header>Code output · ${title}</header><main><p>This prompt returned code rather than a complete standalone HTML app, so the preview is showing the generated source. Connect a code-generation model for runnable builds.</p><pre><code>${escaped}</code></pre></main></body></html>`;
+    }
+
     function updateCodeAndPreview(htmlCode, vexCode) {
       const previewIframe = document.getElementById('previewIframe');
       const codeDisplay = document.getElementById('vexCodeDisplay');
@@ -1679,6 +1715,7 @@ window.addEventListener('error', function(e) {
     }
 
     function openPreviewPopout() {
+      if (!requireSignIn()) return;
       const active = ProjectStore.getActive();
       if (!active || !active.code) return;
       const win = window.open('', '_blank');
@@ -1690,6 +1727,7 @@ window.addEventListener('error', function(e) {
     }
 
     function setPlaygroundMode(mode) {
+      if (!requireSignIn()) return;
       const left = document.getElementById('leftColumn');
       const right = document.getElementById('rightColumn');
       if (!left || !right) return;
@@ -1720,6 +1758,7 @@ window.addEventListener('error', function(e) {
     }
 
     function setMobileView(view) {
+      if (!requireSignIn()) return;
       const left = document.getElementById('leftColumn');
       const right = document.getElementById('rightColumn');
       const btnChat = document.getElementById('mobile-btn-chat');
@@ -1842,10 +1881,12 @@ window.addEventListener('error', function(e) {
     // 8. Auth / OTP Modal Logic
     // ------------------------------------------
     function openModal(id) {
+      if (!state.isLoggedIn && !['otpModal', 'termsModal', 'privacyModal'].includes(id)) { id = 'otpModal'; }
       document.getElementById(id)?.classList.remove('hidden');
     }
 
     function closeModal(id) {
+      if (id === 'otpModal' && !state.isLoggedIn) return;
       document.getElementById(id)?.classList.add('hidden');
     }
 
@@ -1867,9 +1908,21 @@ window.addEventListener('error', function(e) {
     function logout() {
       state.isLoggedIn = false;
       localStorage.removeItem('vex_auth_session');
+      state.userEmail = '';
       updateAuthUi(false);
       updateDrawerProfile('');
-      alert('Signed out of VEX Studio.');
+      ProjectStore.renderDrawerProjects();
+      ProjectStore.renderModalProjects();
+      const chat = document.getElementById('chatMessages');
+      if (chat) chat.innerHTML = '';
+      const preview = document.getElementById('previewIframe');
+      if (preview) preview.srcdoc = '';
+      const code = document.getElementById('vexCodeDisplay');
+      if (code) code.innerText = '';
+      const title = document.getElementById('currentProjectTitle');
+      if (title) title.innerText = 'Sign in to continue';
+      switchView('home');
+      openModal('otpModal');
     }
 
     function switchAuthTab(tab) {
@@ -1902,6 +1955,14 @@ window.addEventListener('error', function(e) {
       }
     }
 
+    function handleOtpInput(input, index) {
+      if (input.value && input.value.length >= 1) {
+        input.value = input.value.slice(-1);
+        const boxes = document.querySelectorAll('#authViewOtp .otp-box');
+        if (boxes[index + 1]) boxes[index + 1].focus();
+      }
+    }
+
     function executeSignInWithPassword() {
       const email = document.getElementById('signInEmail')?.value.trim();
       const password = document.getElementById('signInPassword')?.value.trim();
@@ -1917,16 +1978,15 @@ window.addEventListener('error', function(e) {
       let accounts = {};
       try {
         accounts = JSON.parse(localStorage.getItem('vex_user_accounts') || '{}');
-      } catch(e) {}
+      } catch (e) {}
 
-      if (accounts[email]) {
-        if (accounts[email].password !== password) {
-          alert('Incorrect password. Please try again or use "Forgot password?".');
-          return;
-        }
-      } else {
-        accounts[email] = { password: password, verified: true, createdAt: Date.now() };
-        localStorage.setItem('vex_user_accounts', JSON.stringify(accounts));
+      if (!accounts[email] || !accounts[email].verified) {
+        alert('No verified account found for ' + email + '. Please switch to "Create Account" to register and receive your verification PIN via email.');
+        return;
+      }
+      if (accounts[email].password !== password) {
+        alert('Incorrect password. Please try again or use "Forgot password?".');
+        return;
       }
 
       saveAuthSession(email);
@@ -1947,38 +2007,95 @@ window.addEventListener('error', function(e) {
         return;
       }
 
-      state.pendingSignUp = { email: email, password: password };
+      state.pendingSignUp = { email: email, password: password, mode: 'signup' };
       state.userEmail = email;
 
+      const btn = event?.currentTarget;
+      const oldText = btn ? btn.innerText : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Sending PIN via Resend...';
+      }
+
       try {
-        await fetch('http://167.172.215.253:8080/api/send-otp', {
+        const res = await fetch('http://167.172.215.253:8080/api/send-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: email })
         });
-      } catch(e) {}
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          alert('Could not send verification email: ' + (data.error || 'Server error'));
+          if (btn) { btn.disabled = false; btn.innerText = oldText; }
+          return;
+        }
+      } catch (e) {
+        console.warn('send-otp network notice:', e);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = oldText;
+        }
+      }
 
       const target = document.getElementById('otpTargetEmail');
       if (target) target.innerText = email;
       switchAuthTab('otp');
+      const firstBox = document.querySelector('#authViewOtp .otp-box');
+      if (firstBox) firstBox.focus();
     }
 
     async function confirmOtpCode() {
       const boxes = document.querySelectorAll('#authViewOtp .otp-box');
       let code = '';
-      boxes.forEach(b => code += b.value);
+      boxes.forEach(b => code += (b.value || ''));
       if (code.length < 6) {
         alert('Please enter the full 6-digit verification code.');
         return;
       }
 
-      const email = (state.pendingSignUp && state.pendingSignUp.email) || state.userEmail || 'developer@vex.io';
-      const password = (state.pendingSignUp && state.pendingSignUp.password) || 'vex_dev_2026';
+      const pending = state.pendingSignUp || {};
+      const email = pending.email || state.userEmail;
+      if (!email) {
+        alert('No email found for verification. Please sign up first.');
+        switchAuthTab('signup');
+        return;
+      }
+
+      const btn = event?.currentTarget;
+      const oldText = btn ? btn.innerText : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Verifying PIN...';
+      }
+
+      try {
+        const res = await fetch('http://167.172.215.253:8080/api/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, code: code })
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          alert('Verification failed: ' + (data.error || 'Incorrect code.'));
+          if (btn) { btn.disabled = false; btn.innerText = oldText; }
+          return;
+        }
+      } catch (e) {
+        console.warn('verify-otp network notice:', e);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = oldText;
+        }
+      }
 
       let accounts = {};
       try {
         accounts = JSON.parse(localStorage.getItem('vex_user_accounts') || '{}');
-      } catch(e) {}
+      } catch (e) {}
+
+      const password = pending.password || (accounts[email] && accounts[email].password) || 'vex_dev_2026';
       accounts[email] = { password: password, verified: true, verifiedAt: Date.now() };
       localStorage.setItem('vex_user_accounts', JSON.stringify(accounts));
 
@@ -1988,7 +2105,7 @@ window.addEventListener('error', function(e) {
       if (state.currentPrompt) executeSynthesis(state.currentPrompt);
     }
 
-    function executeResetPassword() {
+    async function executeResetPassword() {
       const email = document.getElementById('forgotEmail')?.value.trim();
       const newPass = document.getElementById('forgotNewPassword')?.value.trim();
       if (!email || !email.includes('@')) {
@@ -2000,24 +2117,38 @@ window.addEventListener('error', function(e) {
         return;
       }
 
-      let accounts = {};
+      state.pendingSignUp = { email: email, password: newPass, mode: 'reset' };
+      state.userEmail = email;
+
+      const btn = event?.currentTarget;
+      const oldText = btn ? btn.innerText : '';
+      if (btn) { btn.disabled = true; btn.innerText = 'Sending Reset PIN...'; }
+
       try {
-        accounts = JSON.parse(localStorage.getItem('vex_user_accounts') || '{}');
-      } catch(e) {}
-      accounts[email] = { password: newPass, verified: true, updatedAt: Date.now() };
-      localStorage.setItem('vex_user_accounts', JSON.stringify(accounts));
+        const res = await fetch('http://167.172.215.253:8080/api/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          alert('Could not send reset PIN: ' + (data.error || 'Server error'));
+          if (btn) { btn.disabled = false; btn.innerText = oldText; }
+          return;
+        }
+      } catch (e) {
+        console.warn('send-otp reset notice:', e);
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerText = oldText; }
+      }
 
-      saveAuthSession(email);
-      closeModal('otpModal');
-      showToast('Password updated! Signed in.', 'success');
+      const target = document.getElementById('otpTargetEmail');
+      if (target) target.innerText = email;
+      switchAuthTab('otp');
+      const firstBox = document.querySelector('#authViewOtp .otp-box');
+      if (firstBox) firstBox.focus();
     }
 
-    function continueAsGuest() {
-      saveAuthSession('guest@vex.local');
-      closeModal('otpModal');
-      showToast('Logged in as Guest Developer', 'success');
-      if (state.currentPrompt) executeSynthesis(state.currentPrompt);
-    }
 
     function executePairing() {
       const ip = document.getElementById('pairIp')?.value.trim();
@@ -2040,6 +2171,7 @@ window.addEventListener('error', function(e) {
     }
 
     function switchView(view) {
+      if (view === 'builder' && !requireSignIn()) return;
       if (view === 'builder') {
         document.getElementById('playgroundSection')?.classList.remove('hidden');
         document.getElementById('playgroundSection')?.classList.add('flex');
@@ -2464,7 +2596,7 @@ window.addEventListener('error', function(e) {
       items.forEach(p => {
         const card = document.createElement('div');
         card.className = 'bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition overflow-hidden flex flex-col group';
-        card.innerHTML = `
+        card.innerHTML = \`
           <div class="h-44 w-full bg-slate-100 relative overflow-hidden">
             <img src="\${p.img}" alt="\${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
             <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur text-slate-800 shadow-xs">\${p.badge}</span>
@@ -2483,7 +2615,7 @@ window.addEventListener('error', function(e) {
               </button>
             </div>
           </div>
-        `;
+        \`;
         grid.appendChild(card);
       });
     }
@@ -2538,7 +2670,7 @@ window.addEventListener('error', function(e) {
       cart.forEach(item => {
         const row = document.createElement('div');
         row.className = 'p-3 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between gap-3 text-xs';
-        row.innerHTML = `
+        row.innerHTML = \`
           <div class="truncate flex-1">
             <div class="font-bold text-slate-900 truncate">\${item.name}</div>
             <div class="text-[11px] text-slate-500">$\${item.price.toFixed(2)} each</div>
@@ -2551,7 +2683,7 @@ window.addEventListener('error', function(e) {
             </div>
             <div class="font-black text-slate-900 min-w-[50px] text-right">$\${(item.price * item.qty).toFixed(2)}</div>
           </div>
-        `;
+        \`;
         list.appendChild(row);
       });
     }
@@ -2621,6 +2753,22 @@ window.addEventListener('error', function(e) {
 </html>`;
     }
 
+    function generatePromptSpecificScaffold(prompt) {
+      const original = (prompt || 'Custom application').trim();
+      const title = original.split(/[.?!;\n]/)[0].slice(0, 56) || 'Custom application';
+      const text = original.toLowerCase();
+      const modules = [];
+      if (/auth|login|account|user|role|permission/.test(text)) modules.push(['Access & accounts', 'Sign-in states, account details, and permission-aware views']);
+      if (/store|shop|ecommerce|product|cart|checkout|buy|sell/.test(text)) modules.push(['Catalog & checkout', 'Product discovery, basket state, and an order flow']);
+      if (/task|todo|kanban|project|workflow|board/.test(text)) modules.push(['Work management', 'Track items, owners, status, and next actions']);
+      if (/chart|analytics|report|metric|dashboard/.test(text)) modules.push(['Insights', 'Searchable summaries and visual reporting areas']);
+      if (/chat|message|comment|support|ticket/.test(text)) modules.push(['Conversations', 'A focused place for messages and follow-up']);
+      if (/calendar|schedule|event|booking/.test(text)) modules.push(['Scheduling', 'Upcoming events and booking details']);
+      if (modules.length === 0) modules.push(['Core workspace', 'A prompt-specific starting point for the main workflow'], ['Records & actions', 'A clear place to review information and take the next step']);
+      const cards = modules.map(([name, desc]) => `<article><span>MODULE</span><h2>${escapeHtml(name)}</h2><p>${escapeHtml(desc)}</p></article>`).join('');
+      return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><style>*{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#0f172a;font:15px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}header{height:64px;background:white;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 5vw}header strong{font-size:16px}header span{color:#64748b;font-size:12px}main{max-width:1000px;margin:0 auto;padding:56px 24px}.eyebrow{font-size:12px;color:#4f46e5;font-weight:700;letter-spacing:.08em;text-transform:uppercase}h1{font-size:clamp(28px,5vw,46px);line-height:1.12;letter-spacing:-.04em;margin:12px 0}main>p{color:#64748b;max-width:760px}section{margin-top:36px}section h2{font-size:14px;color:#475569}blockquote{margin:12px 0;padding:18px 20px;border:1px solid #e2e8f0;border-radius:14px;background:white;color:#334155;white-space:pre-wrap} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}article{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:20px;min-height:145px}article span{font-size:10px;font-weight:700;letter-spacing:.1em;color:#6366f1}article h2{font-size:17px;color:#0f172a;margin:10px 0 4px}article p{margin:0;color:#64748b;font-size:13px}.note{margin-top:28px;padding:14px 16px;border-radius:12px;background:#eef2ff;color:#4338ca;font-size:12px}</style></head><body><header><strong>${escapeHtml(title)}</strong><span>VEX prompt preview</span></header><main><div class="eyebrow">Offline scaffold</div><h1>${escapeHtml(title)}</h1><p>This preview is based on your prompt. Connect a code-generation model to turn the brief into a bespoke, interactive app; without one, VEX can show a prompt-aware scaffold.</p><section><h2>YOUR SPECIFICATION</h2><blockquote>${escapeHtml(original)}</blockquote></section><section><h2>STARTING MODULES</h2><div class="grid">${cards}</div></section><div class="note">This is a scaffold, not a complete implementation. Your original request is shown above so the preview never substitutes an unrelated demo.</div></main></body></html>`;
+    }
+
     function generateCustomAppCode(prompt) {
       const p = (prompt || 'Enterprise Application').trim().toLowerCase();
       
@@ -2638,9 +2786,11 @@ window.addEventListener('error', function(e) {
         return generateBillingAppCode();
       }
 
-      // Default high-performance general enterprise portal
-      const title = (prompt || 'Enterprise Application').trim().split(/[.?!;
-]/)[0].slice(0, 36) || 'VEX Enterprise Portal';
+      // Generic offline fallback stays specific to the user's prompt and avoids unrelated seeded telemetry.
+      return generatePromptSpecificScaffold(prompt);
+
+      // Legacy dashboard template retained below for reference; domain routes above use specialized templates.
+      const title = (prompt || 'Enterprise Application').trim().split(/[.?!;\n]/)[0].slice(0, 36) || 'VEX Enterprise Portal';
       let primary = 'indigo';
       let accent = 'violet';
       if (p.toLowerCase().includes('green') || p.toLowerCase().includes('eco') || p.toLowerCase().includes('health')) {
@@ -3263,12 +3413,6 @@ window.addEventListener('error', function(e) {
       showToast('Successfully pushed application to GitHub repository!', 'success');
     }
 
-    function continueAsGuest() {
-      saveAuthSession('guest@vex.local');
-      closeModal('otpModal');
-      showToast('Logged in as Guest Developer', 'success');
-      if (state.currentPrompt) executeSynthesis(state.currentPrompt);
-    }
 
 
     
@@ -3451,6 +3595,7 @@ window.addEventListener('error', function(e) {
       loadAiSettings();
       loadGitHubConfig();
       ProjectStore.init();
+      if (!state.isLoggedIn) openModal('otpModal');
       switchView('home');
     });
 
