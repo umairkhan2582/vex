@@ -1,0 +1,21 @@
+{
+  "name": "vex-rpc-studio",
+  "version": "2.4.0",
+  "description": "VEX Typed JSON-RPC 2.0 Developer Console & Register Studio",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "vex",
+    "rpc",
+    "json-rpc",
+    "blockchain",
+    "developer-tools",
+    "crypto"
+  ],
+  "author": "Muhammad Khan <umairkhan.gym@gmail.com>",
+  "license": "MIT"
+}
