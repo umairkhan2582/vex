@@ -10,7 +10,7 @@ export const LandingPage: React.FC<{ navigate: (p: string) => void }> = ({ navig
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
             <span>VEX 2.0 VERIFIABLE RUNTIME IS LIVE</span>
             <span className="text-slate-500">&bull;</span>
-            <span className="text-slate-300">Target Node: 167.172.215</span>
+            <span className="text-slate-300">Target Node: 167.172.215.253</span>
           </div>
 
           <h1 className="text-4xl md:text-6xl font-extrabold font-mono text-slate-100 tracking-tight leading-tight">

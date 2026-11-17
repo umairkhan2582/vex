@@ -172,7 +172,7 @@ export const SandboxPlayground: React.FC<{ openByokModal: () => void }> = ({ ope
         ...prev
       ]);
 
-      setStatusMessage(`Block #${newHeight} confirmed in ${res.latencyMs}ms (${res.isFallback ? 'Browser Engine Fallback' : 'Live Node 167.172.215'})`);
+      setStatusMessage(`Block #${newHeight} confirmed in ${res.latencyMs}ms (${res.isFallback ? 'Browser Engine Fallback' : 'Live Node 167.172.215.253'})`);
     } catch (e: any) {
       setStatusMessage(`RPC Error: ${e.message}`);
     } finally {
@@ -330,7 +330,7 @@ export const SandboxPlayground: React.FC<{ openByokModal: () => void }> = ({ ope
                 </div>
                 <div className="text-[11px] text-slate-300">
                   {activeTemplate === 'booking' && 'Escrow Protected: 1,420.00 VEX'}
-                  {activeTemplate === 'feed' && '128 Attested Posts &bull; Node 167.172.215'}
+                  {activeTemplate === 'feed' && '128 Attested Posts &bull; Node 167.172.215.253'}
                   {activeTemplate === 'crypto' && 'Treasury: 1,000,000.00 VEX (8.5% Staking Yield)'}
                 </div>
               </div>

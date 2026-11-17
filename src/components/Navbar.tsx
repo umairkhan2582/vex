@@ -61,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, openByokM
           <div className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span className="text-slate-400">Node:</span>
-            <span className="text-cyan-300 font-medium">167.172.215</span>
+            <span className="text-cyan-300 font-medium">167.172.215.253</span>
             <span className="text-emerald-400">⚡ {endpointLatency}ms</span>
           </div>
 

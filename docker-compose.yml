@@ -9,4 +9,4 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
-      - VEX_RPC_TARGET=http://167.172.215/rpc
+      - VEX_RPC_TARGET=http://167.172.215.253/rpc

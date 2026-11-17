@@ -48,7 +48,7 @@ export const DocsPage: React.FC = () => {
         </p>
         <div className="bg-slate-950 p-4 rounded-lg border border-slate-800 text-xs text-cyan-300 overflow-x-auto">
 <pre>{`POST /rpc HTTP/1.1
-Host: 167.172.215
+Host: 167.172.215.253
 Content-Type: application/json
 X-Vex-Digest: 0x8f2a93c1b017e4da28994511082cde4418aef220b...
 X-Vex-Signature: sig_ed25519_99af281c...

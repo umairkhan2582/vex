@@ -7,7 +7,7 @@ export class VexRpcClient {
   private fallbackEnabled: boolean;
 
   constructor(
-    endpoint: string = 'http://167.172.215/rpc',
+    endpoint: string = 'http://167.172.215.253/rpc',
     bearerToken: string = '',
     fallbackEnabled: boolean = true
   ) {
@@ -158,6 +158,6 @@ export class VexRpcClient {
 }
 
 export const defaultVexClient = new VexRpcClient(
-  localStorage.getItem('vex_custom_rpc') || 'http://167.172.215/rpc',
+  localStorage.getItem('vex_custom_rpc') || 'http://167.172.215.253/rpc',
   localStorage.getItem('vex_auth_token') || ''
 );
