@@ -1,70 +1,113 @@
-# VEX RPC Studio
+# VEX Verifiable AI-Native Application Platform
 
-> Verifiable AI-Native Application Ecosystem — Typed JSON-RPC 2.0 Developer Console
-
-A clean, modern, dark technical developer console engineered for managing, inspecting, and testing typed JSON-RPC 2.0 endpoints, register state transitions (`@state`, `@rpc`, `@ui`), Ed25519 signature simulation, and deterministic verification.
+> The deterministic, register-addressed web stack engineered for near-zero LLM hallucinations, atomic SHA-256 state rollbacks, and native JSON-RPC 2.0 execution.
 
 ---
 
-## Core Features
+## Architecture Overview
 
-1. **RPC Connection Manager**
-   - Live target RPC Endpoint input with optional Bearer / Ed25519 Signature Header.
-   - Interactive Ping / Handshake status indicator with real-time RTT latency badge.
-   - Profile switcher: VEX Devnet, Localhost Node (`:8545`), VEX Alpha Testnet, or Custom endpoints with localStorage persistence.
+VEX replaces legacy framework bloat with 14 atomic primitives and direct register addressing (`#01`, `#02`, `#03`):
 
-2. **VEX Register & RPC Composer**
-   - **Register Editor**: Syntax support for `@state #01`, `@rpc #02`, `@ui #03`, and `@bus #04` registers with live syntax parsing.
-   - **One-Click Presets**:
-     - `health.ping` (#00 System Heartbeat)
-     - `state.commit` (#01 Core State Delta)
-     - `ui.render` (#03 Reactive UI Manifest)
-   - **Request Inspector**: Structured JSON-RPC 2.0 payload buffer with automatic SHA-256 deterministic content digest computation.
-   - **Ed25519 Signature Simulator**: Cryptographic signature generation and verification toggle over request digests.
-   - **Response Viewer & Atomic State Timeline**: Formatted JSON response envelope with gas consumption, state root attestations, block height tracking, and a **1-click Revert State** rollback engine.
-
-3. **Documentation & Protocol Specification**
-   - Comprehensive reference covering the VEX JSON-RPC 2.0 wire format, 5-stage verification lifecycle, register addressing `#01-#04`, and standard error codes (`-32700`, `-32600`, `-32001`, `-32002`).
-
-4. **Real-time Event Stream**
-   - Minimizable bottom drawer streaming timestamped RPC handshakes, signature checks, and block commitments.
+```
+                        ┌──────────────────────────────────────────────┐
+                        │        LLM / Developer Prompt Input          │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+                                               ▼
+                        ┌──────────────────────────────────────────────┐
+                        │     Stage 1: Register-Addressed Syntax       │
+                        │    (#01, #02) — 85% Less Token Consumption   │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+                                               ▼
+                        ┌──────────────────────────────────────────────┐
+                        │    Stage 2: Deterministic Schema Verifier    │
+                        │      (@schema) — Zero Unhandled Errors       │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+                                               ▼
+                        ┌──────────────────────────────────────────────┐
+                        │     Stage 3: Signed SHA-256 State Ledger     │
+                        │   (@ledger) — Point-in-time State Recovery   │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+                                               ▼
+                        ┌──────────────────────────────────────────────┐
+                        │    Stage 4: JSON-RPC 2.0 Node Execution      │
+                        │      Live Endpoint: http://167.172.215/rpc    │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+                                               ▼
+                        ┌──────────────────────────────────────────────┐
+                        │    Stage 5: Dual-Target Reactive + SEO       │
+                        │ (@ui Client Reactive Tree + @meta Snapshots) │
+                        └──────────────────────────────────────────────┘
+```
 
 ---
 
-## Quick Start on Your Server
+## The 14 VEX Primitives
 
-### Option 1: Standalone Single-File (Zero Build Dependencies)
-Run immediately with any static file server or Python:
+| Primitive | Category | Description |
+| :--- | :--- | :--- |
+| `@server` | Runtime Hosting | Host port, CORS configuration, and edge process binding |
+| `@sandbox` | Isolation | Secure memory boundaries and timeout guards |
+| `@ledger` | Verifiable State Log | SHA-256 hashed chain of state transitions for rollbacks |
+| `@pkg` | Package Management | Content-addressed immutable dependencies |
+| `@schema` | Type Guard | Strict pre-runtime contract verification |
+| `@adapt` | Connectors | Bridges external APIs and database streams into VEX channels |
+| `@state` | Reactive State | Reactive variables, balances, and nonces on register `#01` |
+| `@stream` | Pub/Sub Stream | Real-time WebSocket push updates |
+| `@fn` | Pure Function | Deterministic stateless computation on register `#02` |
+| `@rpc` | Typed RPC Handler | Entrypoint for client requests with Ed25519 signature checks |
+| `@auth` | Cryptographic Identity | Public key verification and role permissions |
+| `@route` | Routing | Maps HTTP paths directly to register functions |
+| `@ui` | Reactive View | Zero-bundle reactive UI manifests compiled on register `#03` |
+| `@meta` | SEO & Crawl | Emits static semantic HTML snapshots for search bots |
+
+---
+
+## Live RPC Node Connection
+
+The application connects directly to the live VEX JSON-RPC 2.0 node at:
+- **Target URL:** `http://167.172.215/rpc`
+- **Fallback:** Automatic browser-side deterministic consensus simulation if node is unreachable or offline
+- **Cryptography:** Canonical JSON stringification + Web Crypto API SHA-256 digest computation + Ed25519 signature simulation
+
+---
+
+## Server Deployment Guide
+
+### Option 1: Run with Node.js
 ```bash
-# Clone the repository
 git clone https://github.com/umairkhan2582/vex.git
 cd vex
-
-# Run with Python
-python3 -m http.server 3000
-
-# Or run with Node.js built-in server
-node server.js
-```
-Open `http://localhost:3000` in your browser.
-
----
-
-### Option 2: Node.js / Express Server
-```bash
 npm install
 npm start
 ```
+Server starts on port `3000` with active reverse proxy forwarding `/rpc` to `http://167.172.215/rpc`.
 
 ---
 
-### Option 3: Docker Deployment
+### Option 2: Docker / Container
 ```bash
 docker compose up -d
 ```
-Access the console at `http://<your-server-ip>:3000`.
+
+---
+
+### Option 3: Modern Vite Development
+```bash
+npm run dev
+```
+
+---
+
+## Security & BYOK Privacy
+- **Bring Your Own Key (BYOK):** Keys for OpenAI, Google Gemini, Groq, and OpenRouter are stored **strictly in browser LocalStorage**. They are never transmitted or proxied through intermediary servers.
+- **Atomic Rollbacks:** Any state commit can be restored with a single click, dispatching a cryptographically signed `state.rollback` command to the RPC runtime.
 
 ---
 
 ## License
-MIT © 2026 Muhammad Khan / The Seven Chain Networks
+MIT © 2026 The Seven Chain Networks

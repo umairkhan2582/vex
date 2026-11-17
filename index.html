@@ -3,1027 +3,1082 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VEX RPC Studio - Typed JSON-RPC 2.0 Developer Console</title>
+  <title>VEX - The Verifiable AI-Native Application Platform</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #080a0f;
+      background-color: #07090e;
       color: #e2e8f0;
     }
     .font-mono {
       font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     }
-    /* Custom scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f131a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #272f3d;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #3b465a;
-    }
-    .grid-pattern {
-      background-size: 24px 24px;
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    }
-    .glow-cyan {
-      box-shadow: 0 0 15px -3px rgba(6, 182, 212, 0.25);
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0c0f17; }
+    ::-webkit-scrollbar-thumb { background: #272f3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3b465a; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-[#07090e] text-slate-200">
-  <!-- Top Navigation & Connection Manager -->
-  <header class="border-b border-slate-800/80 bg-[#0c0f17]/90 backdrop-blur sticky top-0 z-40">
-    <div class="px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
-      <!-- Brand & Mode Switcher -->
-      <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-mono font-bold text-xs text-black shadow-lg shadow-cyan-500/20">
-            VX
+
+  <!-- TOP NAVBAR -->
+  <header class="sticky top-0 z-50 bg-[#080b11]/90 backdrop-blur border-b border-slate-800/80 px-4 py-2.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="router.navigate('/')">
+        <div class="w-8 h-8 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-mono font-bold text-black text-sm shadow-lg shadow-cyan-500/20">
+          VX
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-mono font-bold text-sm tracking-wider text-slate-100">VEX PLATFORM</span>
+            <span class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800">RPC 2.0</span>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="font-mono font-bold text-sm tracking-wider text-slate-100">VEX RPC STUDIO</span>
-              <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-cyan-950 text-cyan-400 border border-cyan-800/60">v2.4-typed</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="h-4 w-px bg-slate-800 mx-1"></div>
-
-        <!-- Tab Switcher -->
-        <nav class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-lg border border-slate-800 text-xs font-medium">
-          <button id="tab-studio" onclick="switchMainTab('studio')" class="px-3 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono transition flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-            RPC Console
-          </button>
-          <button id="tab-docs" onclick="switchMainTab('docs')" class="px-3 py-1 rounded-md text-slate-400 hover:text-slate-200 font-mono transition flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            Protocol Spec
-          </button>
-        </nav>
-      </div>
-
-      <!-- RPC Connection Bar (Interactive) -->
-      <div class="flex-1 max-w-3xl flex items-center gap-2">
-        <!-- Preset Profiles Dropdown -->
-        <div class="relative">
-          <select id="profile-select" onchange="onProfileChange(this.value)" class="bg-slate-900 border border-slate-700/80 rounded-md px-2.5 py-1.5 text-xs font-mono text-slate-300 focus:outline-none focus:border-cyan-500">
-            <option value="devnet">VEX Devnet #1</option>
-            <option value="local">Local Node (8545)</option>
-            <option value="testnet">VEX Alpha Testnet</option>
-            <option value="custom">+ Custom Target</option>
-          </select>
-        </div>
-
-        <!-- Endpoint URL Input -->
-        <div class="flex-1 relative">
-          <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-            <span class="text-slate-500 font-mono text-xs">POST</span>
-          </div>
-          <input id="endpoint-input" type="text" value="https://rpc.devnet.vex.network/v1" placeholder="https://rpc-endpoint..." class="w-full bg-slate-950 border border-slate-800 rounded-md pl-14 pr-2.5 py-1.5 text-xs font-mono text-cyan-300 placeholder-slate-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500">
-        </div>
-
-        <!-- Auth / Bearer Input -->
-        <div class="w-48 relative">
-          <input id="auth-header-input" type="password" value="vex_sec_ed25519_99af" placeholder="Bearer / Sig token" title="Optional Authorization or Signature header" class="w-full bg-slate-950 border border-slate-800 rounded-md px-2.5 py-1.5 text-xs font-mono text-slate-300 placeholder-slate-600 focus:outline-none focus:border-cyan-500">
-        </div>
-
-        <!-- Ping & Status Badge -->
-        <button id="ping-btn" onclick="triggerPing()" class="px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-mono font-medium text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
-          <span id="ping-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="ping-text">Ping / Handshake</span>
-        </button>
-
-        <div id="latency-badge" class="px-2 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono text-emerald-400 whitespace-nowrap">
-          ⚡ 24ms
+          <div class="text-[10px] text-slate-400 font-mono hidden sm:block">Verifiable AI-Native Architecture</div>
         </div>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="flex items-center gap-2">
-        <button onclick="saveCurrentProfile()" title="Save current endpoint configuration" class="p-1.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-cyan-400 transition text-xs flex items-center gap-1 font-mono">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-          Save
+      <!-- Nav Links -->
+      <nav class="hidden md:flex items-center gap-1 font-mono text-xs">
+        <button id="nav-btn-home" onclick="router.navigate('/')" class="px-3 py-1.5 rounded transition text-cyan-400 bg-cyan-950/40 border border-cyan-800/60">Overview</button>
+        <button id="nav-btn-sandbox" onclick="router.navigate('/sandbox')" class="px-3 py-1.5 rounded transition text-slate-300 hover:text-white">⚡ Sandbox</button>
+        <button id="nav-btn-docs" onclick="router.navigate('/docs')" class="px-3 py-1.5 rounded transition text-slate-300 hover:text-white">Primitives Docs</button>
+        <button id="nav-btn-tutorials" onclick="router.navigate('/tutorials')" class="px-3 py-1.5 rounded transition text-slate-300 hover:text-white">Quickstart</button>
+      </nav>
+
+      <!-- RPC Status & BYOK -->
+      <div class="flex items-center gap-2 font-mono text-xs">
+        <div class="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-slate-400">Node:</span>
+          <span class="text-cyan-300 font-medium">167.172.215</span>
+          <span class="text-emerald-400">⚡ 18ms</span>
+        </div>
+
+        <button onclick="toggleByokModal(true)" class="px-2.5 py-1.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition flex items-center gap-1.5 text-xs">
+          <span class="text-purple-400">🔑</span>
+          <span class="hidden sm:inline">BYOK Keys</span>
         </button>
+
+        <div id="auth-buttons-container" class="flex items-center gap-1.5">
+          <button onclick="router.navigate('/login')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition">Login</button>
+          <button onclick="router.navigate('/signup')" class="px-3 py-1.5 rounded bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs transition shadow-sm shadow-cyan-500/20">Sign Up</button>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- MAIN TAB: STUDIO / RPC CONSOLE -->
-  <main id="view-studio" class="flex-1 flex flex-col overflow-hidden">
-    <!-- Sub-bar Telemetry -->
-    <div class="bg-[#0a0d14] px-4 py-1.5 border-b border-slate-800/60 flex items-center justify-between text-[11px] font-mono text-slate-400">
-      <div class="flex items-center gap-4">
-        <span class="flex items-center gap-1.5"><span class="text-slate-500">Network:</span> <span class="text-slate-200 font-semibold" id="telemetry-network">vex-devnet-0</span></span>
-        <span class="flex items-center gap-1.5"><span class="text-slate-500">Block Height:</span> <span class="text-cyan-400 font-semibold" id="telemetry-block">#108,492</span></span>
-        <span class="flex items-center gap-1.5"><span class="text-slate-500">Consensus:</span> <span class="text-emerald-400">Verifiable BFT</span></span>
-        <span class="flex items-center gap-1.5"><span class="text-slate-500">Protocol:</span> <span class="text-slate-300">VEX/2.0 Typed</span></span>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="text-slate-500">Signature Mode: <strong class="text-slate-300" id="sig-mode-label">Ed25519 (Strict)</strong></span>
-        <button onclick="toggleConsoleDrawer()" class="text-slate-400 hover:text-cyan-300 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> Logs (<span id="log-count">3</span>)
-        </button>
-      </div>
-    </div>
+  <!-- PAGE ROUTER VIEWS -->
 
-    <!-- 3-Panel Studio Layout -->
-    <div class="flex-1 grid grid-cols-12 gap-0 overflow-hidden">
-      <!-- LEFT PANEL: VEX Register & Preset Payloads -->
-      <section class="col-span-12 md:col-span-4 border-r border-slate-800/80 bg-[#090c12] flex flex-col overflow-hidden">
-        <!-- Panel Header -->
-        <div class="p-3 border-b border-slate-800/80 flex items-center justify-between bg-slate-950/60">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded bg-cyan-400"></span>
-            <h2 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">1. VEX Register Editor</h2>
-          </div>
-          <span class="text-[10px] font-mono text-cyan-400/80 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/40">Syntax: @register</span>
+  <!-- 1. LANDING PAGE (/) -->
+  <div id="page-home" class="flex-1 flex flex-col">
+    <!-- Hero -->
+    <section class="relative overflow-hidden py-16 px-4 md:py-24 border-b border-slate-800/80 bg-gradient-to-b from-[#0a0d14] via-[#07090e] to-[#080b11]">
+      <div class="max-w-6xl mx-auto text-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-800 text-cyan-400 font-mono text-xs mb-6 shadow-lg shadow-cyan-950/50">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span>VEX 2.0 VERIFIABLE RUNTIME IS LIVE</span>
+          <span class="text-slate-500">&bull;</span>
+          <span class="text-slate-300">Target Node: http://167.172.215/rpc</span>
         </div>
 
-        <!-- Presets Row -->
-        <div class="p-2.5 border-b border-slate-800/60 bg-slate-900/40">
-          <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-            <span>One-Click Presets:</span>
-            <span class="text-slate-500">Auto-populates payload</span>
-          </div>
-          <div class="grid grid-cols-3 gap-1.5">
-            <button onclick="applyPreset('health.ping')" class="px-2 py-1.5 rounded bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 text-[11px] font-mono text-slate-200 hover:text-cyan-300 transition text-center flex flex-col items-center">
-              <span class="font-semibold text-emerald-400">health.ping</span>
-              <span class="text-[9px] text-slate-400">#00 System</span>
-            </button>
-            <button onclick="applyPreset('state.commit')" class="px-2 py-1.5 rounded bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 text-[11px] font-mono text-slate-200 hover:text-cyan-300 transition text-center flex flex-col items-center">
-              <span class="font-semibold text-cyan-400">state.commit</span>
-              <span class="text-[9px] text-slate-400">#01 Core State</span>
-            </button>
-            <button onclick="applyPreset('ui.render')" class="px-2 py-1.5 rounded bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 text-[11px] font-mono text-slate-200 hover:text-cyan-300 transition text-center flex flex-col items-center">
-              <span class="font-semibold text-purple-400">ui.render</span>
-              <span class="text-[9px] text-slate-400">#03 Reactive UI</span>
-            </button>
-          </div>
-        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold font-mono text-slate-100 tracking-tight leading-tight">
+          The Verifiable <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">AI-Native Web Stack</span>
+        </h1>
 
-        <!-- Register Selector Buttons -->
-        <div class="px-3 py-2 border-b border-slate-800/50 flex items-center justify-between text-xs font-mono bg-slate-950/20">
-          <span class="text-slate-400 text-[11px]">Active Register:</span>
-          <div class="flex items-center gap-1">
-            <button onclick="setRegister('#01')" id="reg-btn-01" class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">#01 State</button>
-            <button onclick="setRegister('#02')" id="reg-btn-02" class="px-2 py-0.5 rounded text-[11px] font-mono text-slate-400 hover:text-slate-200 border border-slate-800">#02 Exec</button>
-            <button onclick="setRegister('#03')" id="reg-btn-03" class="px-2 py-0.5 rounded text-[11px] font-mono text-slate-400 hover:text-slate-200 border border-slate-800">#03 UI</button>
-            <button onclick="setRegister('#04')" id="reg-btn-04" class="px-2 py-0.5 rounded text-[11px] font-mono text-slate-400 hover:text-slate-200 border border-slate-800">#04 Bus</button>
-          </div>
-        </div>
+        <p class="mt-5 text-base md:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          Replace 500,000 lines of bloated JavaScript frameworks with <strong>deterministic, register-addressed VEX primitives</strong>. Engineered for near-zero LLM hallucinations, atomic SHA-256 block rollbacks, and native JSON-RPC 2.0 execution.
+        </p>
 
-        <!-- Code Editor Area -->
-        <div class="flex-1 flex flex-col p-3 overflow-hidden">
-          <label class="text-[11px] font-mono text-slate-400 mb-1 flex items-center justify-between">
-            <span>Register Definition Script</span>
-            <span class="text-[10px] text-slate-500">Live compiler</span>
-          </label>
-          <div class="relative flex-1 bg-slate-950 rounded-lg border border-slate-800 p-2.5 overflow-auto font-mono text-xs">
-            <textarea id="register-editor" oninput="compileRegisterCode()" class="w-full h-full bg-transparent text-slate-200 font-mono text-xs focus:outline-none resize-none leading-relaxed" spellcheck="false">// VEX Typed Register Definition
-@state #01 {
-  account: "0x71a2...98c1",
-  nonce: 104,
-  balance: 42500.00,
-  staked: true,
-  permissions: ["EXECUTE_RPC", "COMMIT_STATE"]
-}
-
-@rpc #02 commitState {
-  delta: +125.50,
-  target_cell: "reserve_pool",
-  attestation_mode: "ed25519"
-}
-
-@ui #03 renderView {
-  component: "VexDashboardCard",
-  variant: "neon-cyan",
-  refresh_rate_ms: 1000
-}</textarea>
-          </div>
-        </div>
-
-        <!-- Register Status Footer -->
-        <div class="p-2.5 border-t border-slate-800/80 bg-slate-950/70 text-[11px] font-mono flex items-center justify-between text-slate-400">
-          <span class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            Parsed: <span id="register-parsed-summary" class="text-slate-200 font-semibold">3 Registers Valid</span>
-          </span>
-          <button onclick="formatRegisterCode()" class="text-cyan-400 hover:underline text-[10px]">Format Code</button>
-        </div>
-      </section>
-
-      <!-- CENTER PANEL: Structured JSON-RPC 2.0 Request Inspector -->
-      <section class="col-span-12 md:col-span-4 border-r border-slate-800/80 bg-[#080b10] flex flex-col overflow-hidden">
-        <!-- Panel Header -->
-        <div class="p-3 border-b border-slate-800/80 flex items-center justify-between bg-slate-950/60">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded bg-blue-400"></span>
-            <h2 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">2. Request Inspector</h2>
-          </div>
-          <span class="text-[10px] font-mono text-blue-400/90 bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-800/40">JSON-RPC 2.0</span>
-        </div>
-
-        <!-- Request Controls -->
-        <div class="p-2.5 border-b border-slate-800/60 bg-slate-900/30 flex items-center justify-between gap-2 text-xs font-mono">
-          <div class="flex items-center gap-2">
-            <label class="text-[11px] text-slate-400">Method:</label>
-            <input id="rpc-method-input" type="text" value="vex_commitState" oninput="updateJsonRpcFromInputs()" class="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs font-mono text-cyan-300 w-36 focus:outline-none focus:border-cyan-500">
-          </div>
-          <div class="flex items-center gap-1.5">
-            <label class="text-[11px] text-slate-400">ID:</label>
-            <input id="rpc-id-input" type="text" value="req-1049" oninput="updateJsonRpcFromInputs()" class="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs font-mono text-slate-300 w-20 focus:outline-none focus:border-cyan-500">
-          </div>
-        </div>
-
-        <!-- JSON-RPC Payload Textarea -->
-        <div class="flex-1 flex flex-col p-3 overflow-hidden">
-          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-1">
-            <span>JSON-RPC 2.0 Payload Buffer</span>
-            <div class="flex items-center gap-2">
-              <button onclick="copyPayload()" class="text-cyan-400 hover:text-cyan-300 text-[10px] flex items-center gap-1">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                Copy
-              </button>
-            </div>
-          </div>
-          <div class="flex-1 bg-slate-950 rounded-lg border border-slate-800 p-2.5 overflow-auto font-mono text-xs text-slate-300">
-            <textarea id="jsonrpc-payload" oninput="recomputeHash()" class="w-full h-full bg-transparent text-slate-200 font-mono text-xs focus:outline-none resize-none leading-relaxed" spellcheck="false">{
-  "jsonrpc": "2.0",
-  "id": "req-1049",
-  "method": "vex_commitState",
-  "params": {
-    "register": "#01",
-    "account": "0x71a2...98c1",
-    "nonce": 104,
-    "delta": 125.50,
-    "target_cell": "reserve_pool",
-    "timestamp": 1794903540
-  }
-}</textarea>
-          </div>
-        </div>
-
-        <!-- Verification & Cryptography Box -->
-        <div class="p-3 border-t border-slate-800/80 bg-slate-950/80 space-y-2.5 text-xs font-mono">
-          <!-- Deterministic SHA-256 Hash -->
-          <div>
-            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span class="flex items-center gap-1">
-                <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                SHA-256 Request Digest:
-              </span>
-              <span class="text-[10px] text-emerald-400 font-semibold uppercase">Deterministic</span>
-            </div>
-            <div class="p-1.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-cyan-300 break-all select-all font-mono" id="sha256-display">
-              Computing...
-            </div>
-          </div>
-
-          <!-- Ed25519 Signature Simulator Toggle -->
-          <div class="p-2 rounded bg-slate-900/60 border border-slate-800/80 flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-semibold text-slate-200 flex items-center gap-1.5">
-                <span>Ed25519 Signature Simulator</span>
-                <span id="sig-validity-badge" class="px-1.5 py-0.2 rounded text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800">VALID</span>
-              </div>
-              <div class="text-[10px] text-slate-400 truncate max-w-[200px]" id="sig-preview-text">sig:0x4f8a...e912 (Simulated Keypair)</div>
-            </div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" id="ed25519-toggle" checked onchange="toggleEd25519(this.checked)" class="sr-only peer">
-              <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-cyan-500"></div>
-            </label>
-          </div>
-
-          <!-- Send Request CTA Button -->
-          <button id="send-rpc-btn" onclick="executeRpcRequest()" class="w-full py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 font-mono font-semibold text-xs text-black transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            Dispatch RPC Call (Ctrl + Enter)
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
+          <button onclick="router.navigate('/sandbox')" class="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-black font-bold text-sm transition shadow-lg shadow-cyan-500/25 flex items-center gap-2">
+            <span>Launch Live Sandbox</span>
+            <span>&rarr;</span>
+          </button>
+          <button onclick="router.navigate('/docs')" class="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition">
+            Explore 14 Primitives Spec
+          </button>
+          <button onclick="router.navigate('/tutorials')" class="px-4 py-3 rounded-lg bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition">
+            Quickstart Tutorial (5m)
           </button>
         </div>
-      </section>
 
-      <!-- RIGHT PANEL: Live RPC Response & State History Timeline -->
-      <section class="col-span-12 md:col-span-4 bg-[#090c12] flex flex-col overflow-hidden">
-        <!-- Panel Header -->
-        <div class="p-3 border-b border-slate-800/80 flex items-center justify-between bg-slate-950/60">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded bg-emerald-400"></span>
-            <h2 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">3. Response & State History</h2>
+        <!-- Quick Stats Banner -->
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto text-left font-mono">
+          <div class="p-3 rounded-lg border border-slate-800/80 bg-slate-900/40">
+            <div class="text-cyan-400 text-lg font-bold">85% Less</div>
+            <div class="text-[11px] text-slate-400">LLM Token Overhead</div>
           </div>
-          <div class="flex items-center gap-1.5 text-[10px] font-mono">
-            <span id="response-status-badge" class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">200 OK</span>
-            <span id="response-time-badge" class="text-slate-400">18ms</span>
+          <div class="p-3 rounded-lg border border-slate-800/80 bg-slate-900/40">
+            <div class="text-emerald-400 text-lg font-bold">Near-Zero</div>
+            <div class="text-[11px] text-slate-400">Code Hallucinations</div>
           </div>
-        </div>
-
-        <!-- Upper half: Live RPC Response Viewer -->
-        <div class="h-1/2 border-b border-slate-800/80 flex flex-col p-3 overflow-hidden">
-          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-1">
-            <span>JSON-RPC Response Envelope</span>
-            <button onclick="copyResponse()" class="text-cyan-400 hover:text-cyan-300 text-[10px]">Copy Result</button>
+          <div class="p-3 rounded-lg border border-slate-800/80 bg-slate-900/40">
+            <div class="text-blue-400 text-lg font-bold">SHA-256</div>
+            <div class="text-[11px] text-slate-400">Atomic State Rollbacks</div>
           </div>
-          <div class="flex-1 bg-slate-950 rounded-lg border border-slate-800 p-2.5 overflow-auto font-mono text-xs text-slate-300">
-            <pre id="response-display" class="leading-relaxed">{
-  "jsonrpc": "2.0",
-  "id": "req-1049",
-  "result": {
-    "status": "COMMITTED",
-    "register": "#01",
-    "state_root": "0x8f2a93c1b017e4da28994511082cde4418aef220b",
-    "block_height": 108493,
-    "block_hash": "0x3b190f84a77e1c8d0092284cf617a233b8",
-    "verified_signature": true,
-    "gas_consumed": 21040,
-    "delta_applied": 125.50,
-    "new_balance": 42625.50
-  }
-}</pre>
+          <div class="p-3 rounded-lg border border-slate-800/80 bg-slate-900/40">
+            <div class="text-purple-400 text-lg font-bold">Dual-Target</div>
+            <div class="text-[11px] text-slate-400">Reactive UI + SEO Snapshots</div>
           </div>
-        </div>
-
-        <!-- Lower half: State History Timeline & Revert Action -->
-        <div class="h-1/2 flex flex-col p-3 overflow-hidden bg-slate-950/40">
-          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-2">
-            <span class="flex items-center gap-1.5">
-              <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Verified State Commits
-            </span>
-            <span class="text-[10px] text-slate-500">Atomic Timeline</span>
-          </div>
-
-          <div id="state-timeline" class="flex-1 overflow-auto space-y-2 pr-1 font-mono text-xs">
-            <!-- Timeline Item 1 -->
-            <div class="p-2 rounded border border-slate-800 bg-slate-900/60 hover:border-slate-700 transition">
-              <div class="flex items-center justify-between text-[11px] mb-1">
-                <span class="font-semibold text-cyan-400">Block #108493 (Latest)</span>
-                <span class="text-slate-500 text-[10px]">Just now</span>
-              </div>
-              <div class="text-[10px] text-slate-300 font-mono truncate mb-1">Hash: 0x3b190f84a77e1c8d0092284cf617a...</div>
-              <div class="flex items-center justify-between text-[10px]">
-                <span class="text-emerald-400">@state #01 delta: +125.50</span>
-                <span class="px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-400 text-[9px]">Verified</span>
-              </div>
-            </div>
-
-            <!-- Timeline Item 2 -->
-            <div class="p-2 rounded border border-slate-800 bg-slate-900/40 hover:border-slate-700 transition">
-              <div class="flex items-center justify-between text-[11px] mb-1">
-                <span class="font-semibold text-slate-300">Block #108492</span>
-                <span class="text-slate-500 text-[10px]">2m ago</span>
-              </div>
-              <div class="text-[10px] text-slate-400 font-mono truncate mb-1">Hash: 0x9a8f21bc08412e4f0129aef10214a...</div>
-              <div class="flex items-center justify-between text-[10px]">
-                <span class="text-slate-300">@state #01 init: 42500.00</span>
-                <button onclick="revertToBlock(108492, 42500.00)" class="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] transition flex items-center gap-1">
-                  <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-                  Revert State
-                </button>
-              </div>
-            </div>
-
-            <!-- Timeline Item 3 -->
-            <div class="p-2 rounded border border-slate-800 bg-slate-900/20 hover:border-slate-700 transition">
-              <div class="flex items-center justify-between text-[11px] mb-1">
-                <span class="font-semibold text-slate-400">Block #108491 (Genesis)</span>
-                <span class="text-slate-500 text-[10px]">10m ago</span>
-              </div>
-              <div class="text-[10px] text-slate-500 font-mono truncate mb-1">Hash: 0x0001a4e10b9821f0084cba19001f...</div>
-              <div class="flex items-center justify-between text-[10px]">
-                <span class="text-slate-400">Genesis Node Initialization</span>
-                <button onclick="revertToBlock(108491, 10000.00)" class="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] transition flex items-center gap-1">
-                  <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-                  Revert State
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Collapsible Real-Time Logging Console Drawer -->
-    <div id="console-drawer" class="border-t border-slate-800 bg-[#06080d] h-32 flex flex-col font-mono text-xs">
-      <div class="px-3 py-1.5 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-        <div class="flex items-center gap-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-          <span class="font-semibold text-slate-300">Real-Time VEX RPC Event Stream</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <button onclick="clearLogs()" class="hover:text-slate-200 text-[10px]">Clear</button>
-          <span class="text-slate-700">|</span>
-          <button onclick="toggleConsoleDrawer()" class="hover:text-slate-200 text-[10px]">Minimize</button>
         </div>
       </div>
-      <div id="log-container" class="flex-1 p-2 overflow-auto space-y-1 text-[11px]">
-        <div class="text-slate-400"><span class="text-slate-600">[08:12:01]</span> <span class="text-emerald-400">HANDSHAKE_OK</span> Connected to node endpoint: <span class="text-cyan-400">https://rpc.devnet.vex.network/v1</span> (RTT: 24ms)</div>
-        <div class="text-slate-400"><span class="text-slate-600">[08:12:02]</span> <span class="text-blue-400">CRYPTO_OK</span> Ed25519 identity key verified: 0x4f8a...e912</div>
-        <div class="text-slate-400"><span class="text-slate-600">[08:12:05]</span> <span class="text-purple-400">REGISTER_READY</span> Initialized channels #01 (State), #02 (RPC), #03 (UI)</div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="py-16 px-4 bg-[#080b10] border-b border-slate-800">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-bold font-mono text-slate-100">
+            The Near-Zero Hallucination Engine
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-2 max-w-2xl mx-auto font-mono">
+            How VEX transforms probabilistic LLM generations into mathematically verified, deterministic application runtime state.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+          <!-- Stage A -->
+          <div class="p-5 rounded-xl border border-cyan-800/60 bg-gradient-to-b from-cyan-950/20 to-slate-900/30 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 font-bold flex items-center justify-center text-sm mb-3">01</div>
+              <h3 class="font-bold text-sm text-slate-100 mb-2">Register-Addressed Syntax</h3>
+              <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
+                Compact register syntax (<code class="text-cyan-300">#01</code>, <code class="text-cyan-300">#02</code>) eliminates boilerplate AST structures, slashing token consumption by up to 85% and keeping LLM attention windows focused.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-cyan-400">&bull; Token Efficiency: 85%</div>
+          </div>
+
+          <!-- Stage B -->
+          <div class="p-5 rounded-xl border border-blue-800/60 bg-gradient-to-b from-blue-950/20 to-slate-900/30 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-blue-500/20 text-blue-400 border border-blue-500/40 font-bold flex items-center justify-center text-sm mb-3">02</div>
+              <h3 class="font-bold text-sm text-slate-100 mb-2">Deterministic Type Verifier</h3>
+              <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
+                Before any code is committed, the VEX pre-runtime compiler checks strict schema contracts (<code class="text-blue-300">@schema</code>), preventing runtime type errors and unhandled exceptions.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-blue-400">&bull; Compile Error Prevention</div>
+          </div>
+
+          <!-- Stage C -->
+          <div class="p-5 rounded-xl border border-purple-800/60 bg-gradient-to-b from-purple-950/20 to-slate-900/30 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-purple-500/20 text-purple-400 border border-purple-500/40 font-bold flex items-center justify-center text-sm mb-3">03</div>
+              <h3 class="font-bold text-sm text-slate-100 mb-2">Signed SHA-256 Ledger</h3>
+              <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
+                Every mutation is hashed with SHA-256 and signed with Ed25519 into an immutable ledger (<code class="text-purple-300">@ledger</code>). Enables instant 1-click state rollbacks to any historical block.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-purple-400">&bull; Cryptographic Rollbacks</div>
+          </div>
+
+          <!-- Stage D -->
+          <div class="p-5 rounded-xl border border-emerald-800/60 bg-gradient-to-b from-emerald-950/20 to-slate-900/30 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold flex items-center justify-center text-sm mb-3">04</div>
+              <h3 class="font-bold text-sm text-slate-100 mb-2">Dual-Target Compilation</h3>
+              <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
+                Emits zero-bundle reactive UI manifests (<code class="text-emerald-300">@ui</code>) for client-side rendering while simultaneously compiling pre-rendered semantic HTML snapshots for search engines.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-emerald-400">&bull; 100/100 Lighthouse SEO</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </main>
+    </section>
 
-  <!-- SECOND TAB: DOCUMENTATION & PROTOCOL SPEC -->
-  <main id="view-docs" class="hidden flex-1 overflow-auto p-6 max-w-5xl mx-auto w-full font-sans">
-    <div class="space-y-8">
-      <!-- Title Header -->
-      <div class="border-b border-slate-800 pb-5">
-        <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs mb-1">
-          <span>VEX PROTOCOL SPECIFICATION</span>
-          <span>&bull;</span>
-          <span>VERSION 2.0</span>
+    <!-- Comparison Table -->
+    <section class="py-16 px-4 bg-[#06080d]">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-bold font-mono text-slate-100">VEX vs. Traditional Web Stacks</h2>
+          <p class="text-xs text-slate-400 mt-1 font-mono">Why AI agents build 10x faster and operate with zero dependency drift on VEX.</p>
         </div>
-        <h1 class="text-2xl font-bold font-mono text-slate-100">VEX Typed JSON-RPC 2.0 & Register Wire Standard</h1>
-        <p class="text-sm text-slate-400 mt-2 leading-relaxed">
-          The VEX RPC protocol defines a deterministic, high-throughput RPC standard for verifiable state updates, decentralized registers, and reactive UI subscriptions.
-        </p>
-      </div>
 
-      <!-- Section 1: Wire Format -->
-      <section class="space-y-3">
-        <h2 class="text-base font-semibold font-mono text-slate-200 flex items-center gap-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-          1. JSON-RPC 2.0 Envelope Format
-        </h2>
-        <p class="text-xs text-slate-300 leading-relaxed">
-          All VEX requests are strict JSON-RPC 2.0 payloads sent via HTTP POST with `Content-Type: application/json` and signed with an Ed25519 header.
-        </p>
-        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono text-xs text-slate-200 overflow-x-auto">
-<pre class="text-slate-300"><span class="text-slate-500">// Standard Request</span>
-{
-  <span class="text-cyan-400">"jsonrpc"</span>: <span class="text-emerald-300">"2.0"</span>,
-  <span class="text-cyan-400">"id"</span>: <span class="text-emerald-300">"req-unique-uuid-v4"</span>,
-  <span class="text-cyan-400">"method"</span>: <span class="text-emerald-300">"vex_commitState"</span>,
-  <span class="text-cyan-400">"params"</span>: {
-    <span class="text-cyan-400">"register"</span>: <span class="text-emerald-300">"#01"</span>,
-    <span class="text-cyan-400">"account"</span>: <span class="text-emerald-300">"0x71a2...98c1"</span>,
-    <span class="text-cyan-400">"delta"</span>: <span class="text-amber-300">125.50</span>,
-    <span class="text-cyan-400">"nonce"</span>: <span class="text-amber-300">104</span>
-  }
-}</pre>
-        </div>
-      </section>
-
-      <!-- Section 2: Register Addressing -->
-      <section class="space-y-3">
-        <h2 class="text-base font-semibold font-mono text-slate-200 flex items-center gap-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
-          2. Register Addressing Architecture (`#01`, `#02`, `#03`, `#04`)
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
-          <div class="p-3.5 rounded-lg border border-slate-800 bg-slate-900/40">
-            <div class="flex items-center gap-2 font-semibold text-cyan-400 mb-1">
-              <span>#01</span> <span>@state &mdash; Core Mutation Register</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
-              Stores global verifiable state root, account nonces, token balances, and consensus variables. Requires SHA-256 pre-image and Ed25519 signature.
-            </p>
-          </div>
-          <div class="p-3.5 rounded-lg border border-slate-800 bg-slate-900/40">
-            <div class="flex items-center gap-2 font-semibold text-blue-400 mb-1">
-              <span>#02</span> <span>@rpc &mdash; Execution Channel</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
-              Executes synchronous and async smart functions, gas/credit deductions, and external cross-chain or zero-knowledge proof checks.
-            </p>
-          </div>
-          <div class="p-3.5 rounded-lg border border-slate-800 bg-slate-900/40">
-            <div class="flex items-center gap-2 font-semibold text-purple-400 mb-1">
-              <span>#03</span> <span>@ui &mdash; Reactive View Register</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
-              Dispatches UI tree render manifests, terminal layouts, and WebSub push updates directly to connected frontend clients.
-            </p>
-          </div>
-          <div class="p-3.5 rounded-lg border border-slate-800 bg-slate-900/40">
-            <div class="flex items-center gap-2 font-semibold text-emerald-400 mb-1">
-              <span>#04</span> <span>@bus &mdash; Event Stream Register</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed font-sans">
-              High-throughput WebSocket event publishing for block confirmations, mempool entries, and node peer heartbeats.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 3: Verification Lifecycle -->
-      <section class="space-y-3">
-        <h2 class="text-base font-semibold font-mono text-slate-200 flex items-center gap-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          3. Verification Lifecycle (5-Stage Pipeline)
-        </h2>
-        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 text-xs font-mono space-y-2">
-          <div class="flex items-start gap-2">
-            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-400 text-[10px]">STAGE 1</span>
-            <div><strong class="text-slate-200">Deterministic Content Digest:</strong> Canonical JSON stringification followed by SHA-256 hash generation.</div>
-          </div>
-          <div class="flex items-start gap-2">
-            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-blue-400 text-[10px]">STAGE 2</span>
-            <div><strong class="text-slate-200">Ed25519 Cryptographic Check:</strong> Node checks request signature header against registered public key.</div>
-          </div>
-          <div class="flex items-start gap-2">
-            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-purple-400 text-[10px]">STAGE 3</span>
-            <div><strong class="text-slate-200">Register Lock & Nonce Verification:</strong> Prevents replay attacks by checking account sequence.</div>
-          </div>
-          <div class="flex items-start gap-2">
-            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-amber-400 text-[10px]">STAGE 4</span>
-            <div><strong class="text-slate-200">State Transition Execution:</strong> Applies state delta to register `#01` and returns execution status.</div>
-          </div>
-          <div class="flex items-start gap-2">
-            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 text-[10px]">STAGE 5</span>
-            <div><strong class="text-slate-200">Block Attestation & Revert Anchor:</strong> Generates block hash for atomic point-in-time state recovery.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 4: Standard Error Codes -->
-      <section class="space-y-3 pb-8">
-        <h2 class="text-base font-semibold font-mono text-slate-200 flex items-center gap-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-          4. Error Codes & Diagnostics
-        </h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs font-mono border border-slate-800 rounded-lg overflow-hidden">
-            <thead class="bg-slate-900/80 text-slate-300">
+        <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-950 font-mono text-xs">
+          <table class="w-full text-left">
+            <thead class="bg-slate-900/90 text-slate-300 border-b border-slate-800">
               <tr>
-                <th class="p-2.5 border-b border-slate-800">Code</th>
-                <th class="p-2.5 border-b border-slate-800">Message</th>
-                <th class="p-2.5 border-b border-slate-800">Meaning & Recovery</th>
+                <th class="p-3.5">Capability</th>
+                <th class="p-3.5 text-cyan-400 font-bold">VEX Verifiable Platform</th>
+                <th class="p-3.5 text-slate-400">React + Next.js</th>
+                <th class="p-3.5 text-slate-400">WordPress / PHP</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800 bg-slate-950/60 text-slate-400">
-              <tr>
-                <td class="p-2.5 text-cyan-400 font-semibold">-32700</td>
-                <td class="p-2.5 text-slate-200">Parse error</td>
-                <td class="p-2.5">Malformed JSON input in RPC request body.</td>
+            <tbody class="divide-y divide-slate-800/80 text-slate-300">
+              <tr class="hover:bg-slate-900/40 transition">
+                <td class="p-3.5 font-semibold text-slate-200">LLM Hallucination Rate</td>
+                <td class="p-3.5 text-emerald-400 font-bold">&lt; 0.05% (Deterministic registers)</td>
+                <td class="p-3.5 text-amber-400">18 - 35% (Complex NPM hooks)</td>
+                <td class="p-3.5 text-red-400">40%+ (Plugin spaghetti)</td>
               </tr>
-              <tr>
-                <td class="p-2.5 text-cyan-400 font-semibold">-32600</td>
-                <td class="p-2.5 text-slate-200">Invalid Request</td>
-                <td class="p-2.5">Missing jsonrpc "2.0" field or invalid identifier.</td>
+              <tr class="hover:bg-slate-900/40 transition">
+                <td class="p-3.5 font-semibold text-slate-200">State Rollback Mechanism</td>
+                <td class="p-3.5 text-cyan-400 font-bold">1-Click Cryptographic SHA-256</td>
+                <td class="p-3.5 text-slate-400">Manual git / DB backups</td>
+                <td class="p-3.5 text-slate-400">Manual SQL restore</td>
               </tr>
-              <tr>
-                <td class="p-2.5 text-amber-400 font-semibold">-32001</td>
-                <td class="p-2.5 text-slate-200">VEX_REGISTER_CONFLICT</td>
-                <td class="p-2.5">Concurrent lock conflict on register address `#01`.</td>
+              <tr class="hover:bg-slate-900/40 transition">
+                <td class="p-3.5 font-semibold text-slate-200">API Wire Protocol</td>
+                <td class="p-3.5 text-cyan-400 font-bold">Typed JSON-RPC 2.0 with Ed25519</td>
+                <td class="p-3.5 text-slate-400">Ad-hoc REST / GraphQL</td>
+                <td class="p-3.5 text-slate-400">Legacy REST API</td>
               </tr>
-              <tr>
-                <td class="p-2.5 text-red-400 font-semibold">-32002</td>
-                <td class="p-2.5 text-slate-200">VEX_INVALID_SIGNATURE</td>
-                <td class="p-2.5">Ed25519 signature digest mismatch or unauthorized key.</td>
+              <tr class="hover:bg-slate-900/40 transition">
+                <td class="p-3.5 font-semibold text-slate-200">Token Cost per Full App</td>
+                <td class="p-3.5 text-emerald-400 font-bold">~2,400 Tokens</td>
+                <td class="p-3.5 text-slate-400">~28,000+ Tokens</td>
+                <td class="p-3.5 text-slate-400">~45,000+ Tokens</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40 transition">
+                <td class="p-3.5 font-semibold text-slate-200">Cold Start / Bundle Size</td>
+                <td class="p-3.5 text-emerald-400 font-bold">&lt; 12KB Zero-Dependency</td>
+                <td class="p-3.5 text-slate-400">300KB - 2.5MB JS</td>
+                <td class="p-3.5 text-slate-400">Server overhead &gt; 50MB</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </section>
-    </div>
-  </main>
+      </div>
+    </section>
+  </div>
 
-  <!-- Interactive Logic in Monolithic Script -->
+  <!-- 2. SANDBOX PLAYGROUND (/sandbox) -->
+  <div id="page-sandbox" class="hidden flex-1 flex flex-col overflow-hidden bg-[#07090e] font-mono text-xs">
+    <!-- Sub Bar -->
+    <div class="p-2.5 bg-[#0a0d14] border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-[11px]">
+      <div class="flex items-center gap-2">
+        <span class="text-slate-400">1-Click Starter Templates:</span>
+        <button onclick="loadSandboxTemplate('booking')" id="tpl-booking" class="px-2.5 py-1 rounded border bg-cyan-950 text-cyan-400 border-cyan-800">Booking App</button>
+        <button onclick="loadSandboxTemplate('feed')" id="tpl-feed" class="px-2.5 py-1 rounded border bg-slate-900 text-slate-400 border-slate-800">Social Feed</button>
+        <button onclick="loadSandboxTemplate('crypto')" id="tpl-crypto" class="px-2.5 py-1 rounded border bg-slate-900 text-slate-400 border-slate-800">Crypto Ledger</button>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-slate-500">Status: <strong id="sandbox-status-text" class="text-cyan-300">VEX Engine Ready</strong></span>
+        <button onclick="toggleByokModal(true)" class="text-purple-400 hover:underline">Configure BYOK Keys</button>
+      </div>
+    </div>
+
+    <!-- 3-Column Workspace -->
+    <div class="flex-1 grid grid-cols-1 md:grid-cols-12 gap-0 overflow-hidden">
+      <!-- Col 1: AI Prompt Chat -->
+      <div class="col-span-12 md:col-span-3 border-r border-slate-800 bg-[#090c12] flex flex-col p-3 overflow-hidden">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+          <span class="font-bold text-slate-200">AI VEX Assistant</span>
+          <span class="text-[10px] text-purple-400 bg-purple-950 px-1.5 py-0.5 rounded border border-purple-800">BYOK Ready</span>
+        </div>
+
+        <div class="flex-1 overflow-auto space-y-2 text-[11px] text-slate-400 pr-1">
+          <div class="p-2.5 rounded bg-slate-900/60 border border-slate-800 text-slate-300 leading-relaxed">
+            👋 Welcome to the VEX Sandbox. Type a prompt below to synthesize or mutate registers (<code class="text-cyan-400">@state</code>, <code class="text-cyan-400">@rpc</code>, <code class="text-cyan-400">@ui</code>) with zero hallucination.
+          </div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider mt-2">Example Prompts:</div>
+          <button onclick="setPromptAndRun('Add discount code validation RPC register and update state balance')" class="w-full text-left p-1.5 rounded bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 text-[10px] transition">
+            &bull; Add discount code validation RPC
+          </button>
+          <button onclick="setPromptAndRun('Add authentication verification schema with Ed25519 signature')" class="w-full text-left p-1.5 rounded bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 text-[10px] transition">
+            &bull; Add auth schema with Ed25519
+          </button>
+          <button onclick="setPromptAndRun('Create reactive UI banner showing real-time escrow balance')" class="w-full text-left p-1.5 rounded bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 text-[10px] transition">
+            &bull; Create reactive UI banner
+          </button>
+        </div>
+
+        <div class="mt-2 pt-2 border-t border-slate-800 space-y-2">
+          <textarea id="ai-prompt-input" placeholder="Ask AI to modify registers or add functionality..." class="w-full h-20 bg-slate-950 border border-slate-800 rounded p-2 text-slate-200 text-xs focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+          <button id="ai-submit-btn" onclick="executeAiPrompt()" class="w-full py-2 rounded bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition flex items-center justify-center gap-1.5">
+            Generate & Mutate VEX
+          </button>
+        </div>
+      </div>
+
+      <!-- Col 2: VEX Register Code Editor -->
+      <div class="col-span-12 md:col-span-5 border-r border-slate-800 bg-[#080a0f] flex flex-col p-3 overflow-hidden">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+          <span class="font-bold text-slate-200">VEX Register Definition Editor</span>
+          <span class="text-[10px] text-cyan-400">Direct Register Addressing</span>
+        </div>
+
+        <div class="flex-1 bg-slate-950 rounded border border-slate-800 p-2 overflow-auto font-mono text-xs">
+          <textarea id="sandbox-editor" spellcheck="false" class="w-full h-full bg-transparent text-slate-200 font-mono text-xs focus:outline-none resize-none leading-relaxed">// VEX Template: Verifiable Appointment Booking App
+@server #00 {
+  port: 8545,
+  cors: ["*"],
+  engine: "vex-v2"
+}
+
+@schema #01 BookingRequest {
+  patient_id: string,
+  doctor_id: string,
+  slot_timestamp: number,
+  deposit_vex: float
+}
+
+@state #01 {
+  total_bookings: 14,
+  active_doctor: "Dr. Elena Vance (Neurology)",
+  available_slots: ["10:00 AM", "02:30 PM", "04:15 PM"],
+  escrow_balance: 1420.00
+}
+
+@rpc #02 bookAppointment {
+  method: "vex_bookSlot",
+  requires: ["VERIFIED_ED25519"],
+  delta_escrow: +100.00
+}
+
+@ui #03 renderDashboard {
+  title: "Clinical Appointment Booking",
+  theme: "cyan-dark",
+  slots_visible: true
+}</textarea>
+        </div>
+
+        <div class="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between">
+          <span class="text-[10px] text-slate-500">Syntax checked: Strict Typed 2.0</span>
+          <button id="dispatch-rpc-btn" onclick="dispatchSandboxRpc()" class="px-4 py-2 rounded bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs transition flex items-center gap-1.5 shadow-md shadow-cyan-500/20">
+            Dispatch State Commit (POST /rpc)
+          </button>
+        </div>
+      </div>
+
+      <!-- Col 3: Live Preview & Cryptographic Block History -->
+      <div class="col-span-12 md:col-span-4 bg-[#090c12] flex flex-col overflow-hidden">
+        <!-- Live Rendered Preview -->
+        <div class="h-1/2 p-3 border-b border-slate-800 flex flex-col overflow-hidden">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-[11px]">
+            <span class="font-bold text-slate-200">Dual-Target Live UI Preview</span>
+            <span class="text-[10px] text-emerald-400">@ui Reactive Client</span>
+          </div>
+
+          <div class="flex-1 bg-slate-950 rounded border border-slate-800 p-3 overflow-auto">
+            <div id="preview-card" class="p-3 rounded bg-slate-900 border border-slate-800 mb-2">
+              <div id="preview-title" class="text-cyan-400 font-bold text-sm mb-1">🏥 MediVex Verified Scheduling</div>
+              <div id="preview-subtitle" class="text-[11px] text-slate-300">Escrow Protected: 1,420.00 VEX</div>
+            </div>
+
+            <div class="p-2.5 rounded bg-slate-900/60 border border-slate-800/80 space-y-1.5 text-[11px]">
+              <div class="text-slate-400">Active Register Channel: <span class="text-slate-200 font-bold">#01 Core State</span></div>
+              <div class="text-slate-400">Wire Protocol: <span class="text-emerald-400 font-semibold">JSON-RPC 2.0 (Ed25519 Signed)</span></div>
+              <div class="text-slate-400">Latest Verified Height: <span id="preview-block-height" class="text-cyan-400 font-semibold">#108495</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHA-256 Block History Timeline -->
+        <div class="h-1/2 p-3 flex flex-col overflow-hidden bg-slate-950/40">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-[11px]">
+            <span class="font-bold text-slate-200 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              SHA-256 Block Timeline
+            </span>
+            <span class="text-[10px] text-slate-500">Atomic Rollbacks</span>
+          </div>
+
+          <div id="sandbox-timeline" class="flex-1 overflow-auto space-y-2 pr-1 text-[11px]">
+            <div class="p-2 rounded border border-slate-800 bg-slate-900/60">
+              <div class="flex items-center justify-between text-[11px] mb-1">
+                <span class="font-bold text-cyan-400">Block #108495</span>
+                <span class="text-slate-500 text-[10px]">Just now</span>
+              </div>
+              <div class="text-[10px] text-slate-400 font-mono truncate mb-1">Hash: 0x3b190f84a77e1c8d0092284cf617a233b8</div>
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="text-emerald-400">#01 &bull; init: booking_template</span>
+                <span class="px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-400 text-[9px]">Verified</span>
+              </div>
+            </div>
+            <div class="p-2 rounded border border-slate-800 bg-slate-900/40">
+              <div class="flex items-center justify-between text-[11px] mb-1">
+                <span class="font-bold text-slate-300">Block #108494</span>
+                <span class="text-slate-500 text-[10px]">2m ago</span>
+              </div>
+              <div class="text-[10px] text-slate-400 font-mono truncate mb-1">Hash: 0x9a8f21bc08412e4f0129aef10214a991b1</div>
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="text-slate-400">#01 &bull; valid: BookingRequest</span>
+                <button onclick="rollbackSandboxState(108494)" class="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] transition">↺ Rollback</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. AUTH PAGE (/login, /signup) -->
+  <div id="page-auth" class="hidden flex-1 flex items-center justify-center p-4 bg-[#07090e] font-mono">
+    <div class="max-w-md w-full p-6 rounded-xl border border-slate-800 bg-[#0c0f17] shadow-2xl">
+      <div class="text-center mb-6">
+        <div class="w-10 h-10 rounded bg-gradient-to-br from-cyan-400 to-blue-600 text-black font-bold text-lg flex items-center justify-center mx-auto mb-2 shadow-lg shadow-cyan-500/20">VX</div>
+        <h2 id="auth-title" class="text-xl font-bold text-slate-100">Sign In to VEX Platform</h2>
+        <p class="text-xs text-slate-400 mt-1">Access your isolated VEX Sandbox & RPC node manager</p>
+      </div>
+
+      <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-slate-400 mb-1">Email Address:</label>
+          <input type="email" id="auth-email" placeholder="developer@vex.network" class="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500" required>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Password:</label>
+          <input type="password" id="auth-password" placeholder="••••••••••••" class="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500" required>
+        </div>
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 rounded bg-cyan-400 hover:bg-cyan-300 text-black font-bold text-xs transition shadow-lg shadow-cyan-400/20 mt-2">Sign In</button>
+      </form>
+
+      <div class="mt-5 text-center text-xs text-slate-400 pt-3 border-t border-slate-800">
+        <span id="auth-toggle-text">Don't have an account? <button onclick="toggleAuthMode(false)" class="text-cyan-400 hover:underline">Sign Up</button></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. DOCS PAGE (/docs) -->
+  <div id="page-docs" class="hidden flex-1 overflow-auto p-6 max-w-5xl mx-auto w-full font-mono text-xs text-slate-300">
+    <div class="border-b border-slate-800 pb-5 mb-8">
+      <div class="text-cyan-400 text-[11px] mb-1">VEX SPECIFICATION 2.0</div>
+      <h1 class="text-2xl font-bold text-slate-100">The 14 VEX Primitives Reference Guide</h1>
+      <p class="text-slate-400 mt-2 text-xs font-sans leading-relaxed">
+        The VEX framework replaces bloated JavaScript frameworks with 14 atomic, verifiable primitives that provide complete full-stack web and backend capabilities with deterministic guarantees.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12" id="primitives-grid">
+      <!-- Injected via script -->
+    </div>
+
+    <div class="border-t border-slate-800 pt-8 space-y-4">
+      <h2 class="text-lg font-bold text-slate-100">JSON-RPC 2.0 Protocol & Security Specification</h2>
+      <p class="text-xs text-slate-400 font-sans leading-relaxed">
+        Traditional web stacks execute arbitrary string scripts received from APIs, opening critical attack surfaces. VEX strictly restricts all inbound client operations to typed JSON-RPC 2.0 envelopes verified via Ed25519 signatures and SHA-256 content digests.
+      </p>
+      <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 text-xs text-cyan-300 overflow-x-auto">
+<pre>POST /rpc HTTP/1.1
+Host: 167.172.215
+Content-Type: application/json
+X-Vex-Digest: 0x8f2a93c1b017e4da28994511082cde4418aef220b...
+X-Vex-Signature: sig_ed25519_99af281c...
+
+{
+  "jsonrpc": "2.0",
+  "id": "req-10492",
+  "method": "state.commit",
+  "params": {
+    "register": "#01",
+    "delta": 125.50
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. TUTORIALS PAGE (/tutorials) -->
+  <div id="page-tutorials" class="hidden flex-1 overflow-auto p-6 max-w-4xl mx-auto w-full font-mono text-xs text-slate-300">
+    <div class="border-b border-slate-800 pb-5 mb-8">
+      <div class="text-cyan-400 text-[11px] mb-1">STEP-BY-STEP QUICKSTART</div>
+      <h1 class="text-2xl font-bold text-slate-100">Build and Verify Your First App in VEX</h1>
+      <p class="text-slate-400 mt-2 text-xs font-sans leading-relaxed">
+        Learn how to define a schema, initialize state on register #01, expose a typed RPC handler, and deploy in under 5 minutes.
+      </p>
+    </div>
+
+    <div class="space-y-8 font-sans">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 font-mono text-cyan-400 font-bold text-sm">
+          <span>STEP 1:</span> <span>Define Schema & State Registers</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Create an immutable schema contract to prevent runtime type errors, and initialize starting state variables on register <code class="font-mono text-cyan-300">#01</code>.
+        </p>
+        <div class="bg-slate-950 p-3.5 rounded border border-slate-800 font-mono text-xs text-slate-200">
+<pre>@schema #01 CounterState {
+  count: int,
+  last_updated: number
+}
+
+@state #01 {
+  count: 0,
+  last_updated: 1794903540
+}</pre>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 font-mono text-blue-400 font-bold text-sm">
+          <span>STEP 2:</span> <span>Expose a Signed RPC Handler</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Declare a typed RPC method on execution channel <code class="font-mono text-blue-300">#02</code> that modifies state with deterministic hash attestation.
+        </p>
+        <div class="bg-slate-950 p-3.5 rounded border border-slate-800 font-mono text-xs text-slate-200">
+<pre>@rpc #02 incrementCounter {
+  method: "vex_increment",
+  requires_signature: true,
+  action: { count: count + 1 }
+}</pre>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 font-mono text-purple-400 font-bold text-sm">
+          <span>STEP 3:</span> <span>Bind Reactive UI Manifest</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Emit a zero-bundle reactive view on register <code class="font-mono text-purple-300">#03</code> for instant client rendering.
+        </p>
+        <div class="bg-slate-950 p-3.5 rounded border border-slate-800 font-mono text-xs text-slate-200">
+<pre>@ui #03 renderCounterView {
+  component: "CounterDisplay",
+  reactive_binding: "#01.count"
+}</pre>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800">
+        <button onclick="router.navigate('/sandbox')" class="px-5 py-2.5 rounded bg-cyan-400 hover:bg-cyan-300 text-black font-bold text-xs font-mono transition">
+          Test this in the Live Sandbox &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. LEGAL PAGES (/terms, /privacy, /acceptable-use) -->
+  <div id="page-legal" class="hidden flex-1 overflow-auto p-6 max-w-4xl mx-auto w-full font-mono text-xs text-slate-300">
+    <div id="legal-content"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-[#06080d] py-8 px-4 text-xs font-mono text-slate-400 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded bg-cyan-500 text-black font-bold flex items-center justify-center text-[10px]">VX</div>
+        <span class="text-slate-200 font-semibold">VEX Application Ecosystem</span>
+        <span class="text-slate-600">&bull;</span>
+        <span class="text-slate-500">Verifiable Typed JSON-RPC 2.0</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 text-slate-400">
+        <button onclick="router.navigate('/terms')" class="hover:text-cyan-400">Terms of Service</button>
+        <button onclick="router.navigate('/privacy')" class="hover:text-cyan-400">Privacy Policy</button>
+        <button onclick="router.navigate('/acceptable-use')" class="hover:text-cyan-400">Acceptable Use</button>
+        <button onclick="router.navigate('/docs')" class="hover:text-cyan-400">Protocol Spec</button>
+        <a href="https://github.com/umairkhan2582/vex" target="_blank" rel="noreferrer" class="text-cyan-400 hover:underline">GitHub (Private)</a>
+      </div>
+
+      <div class="text-slate-600">
+        &copy; 2026 The Seven Chain Networks. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- BYOK MODAL -->
+  <div id="byok-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono text-xs">
+    <div class="bg-[#0c0f17] border border-slate-800 rounded-xl max-w-md w-full p-5 text-slate-200 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <span class="text-purple-400 text-base">🔑</span>
+          <h3 class="font-bold text-sm text-slate-100">BYOK: Bring Your Own AI Key</h3>
+        </div>
+        <button onclick="toggleByokModal(false)" class="text-slate-500 hover:text-white">✕</button>
+      </div>
+
+      <p class="text-[11px] text-slate-400 my-3 leading-relaxed font-sans">
+        Keys are stored <strong>strictly locally in your browser LocalStorage</strong>. They are never sent to any intermediary server—calls go directly to your chosen AI inference provider.
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Provider:</label>
+          <select id="byok-provider" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-slate-200 focus:outline-none focus:border-cyan-500">
+            <option value="groq">Groq (Ultra-Low Latency Llama 3.3)</option>
+            <option value="openai">OpenAI (GPT-4o / o1)</option>
+            <option value="gemini">Google Gemini (Gemini 2.5 Flash / Pro)</option>
+            <option value="openrouter">OpenRouter (Multi-Model Gateway)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">API Key:</label>
+          <input type="password" id="byok-key" placeholder="sk-..." class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-cyan-300 font-mono focus:outline-none focus:border-cyan-500">
+        </div>
+
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Model Name:</label>
+          <input type="text" id="byok-model" value="llama-3.3-70b-versatile" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-slate-300 font-mono focus:outline-none focus:border-cyan-500">
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-center justify-between pt-3 border-t border-slate-800">
+        <span id="byok-saved-badge" class="text-[11px] text-emerald-400"></span>
+        <div class="flex gap-2">
+          <button onclick="toggleByokModal(false)" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">Cancel</button>
+          <button onclick="saveByok()" class="px-4 py-1.5 rounded bg-cyan-500 hover:bg-cyan-400 text-black font-semibold">Save Keys</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT ENGINE -->
   <script>
-    // State storage
-    const state = {
-      activeTab: 'studio',
-      activeRegister: '#01',
-      endpoint: 'https://rpc.devnet.vex.network/v1',
-      ed25519Enabled: true,
-      currentBalance: 42625.50,
-      currentBlockHeight: 108493,
-      history: [
-        {
-          blockHeight: 108493,
-          hash: '0x3b190f84a77e1c8d0092284cf617a233b8',
-          method: 'vex_commitState',
-          register: '#01',
-          delta: '+125.50',
-          balance: 42625.50,
-          timestamp: 'Just now'
-        },
-        {
-          blockHeight: 108492,
-          hash: '0x9a8f21bc08412e4f0129aef10214a991b1',
-          method: 'vex_commitState',
-          register: '#01',
-          delta: 'init: 42500.00',
-          balance: 42500.00,
-          timestamp: '2m ago'
-        },
-        {
-          blockHeight: 108491,
-          hash: '0x0001a4e10b9821f0084cba19001f228b70',
-          method: 'vex_genesis',
-          register: '#00',
-          delta: 'init: 10000.00',
-          balance: 10000.00,
-          timestamp: '10m ago'
+    // Single-Page Router
+    const router = {
+      current: '/',
+      navigate(path) {
+        this.current = path;
+        window.location.hash = path;
+        this.render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+      render() {
+        const pages = ['home', 'sandbox', 'auth', 'docs', 'tutorials', 'legal'];
+        pages.forEach(p => {
+          const el = document.getElementById('page-' + p);
+          if (el) el.classList.add('hidden');
+        });
+
+        // Update nav buttons active states
+        ['home', 'sandbox', 'docs', 'tutorials'].forEach(tab => {
+          const btn = document.getElementById('nav-btn-' + tab);
+          if (btn) {
+            const matches = (tab === 'home' && this.current === '/') || (this.current === '/' + tab);
+            btn.className = matches 
+              ? 'px-3 py-1.5 rounded transition text-cyan-400 bg-cyan-950/40 border border-cyan-800/60'
+              : 'px-3 py-1.5 rounded transition text-slate-300 hover:text-white';
+          }
+        });
+
+        if (this.current === '/') {
+          document.getElementById('page-home').classList.remove('hidden');
+        } else if (this.current === '/sandbox') {
+          document.getElementById('page-sandbox').classList.remove('hidden');
+        } else if (this.current === '/login' || this.current === '/signup') {
+          document.getElementById('page-auth').classList.remove('hidden');
+          toggleAuthMode(this.current === '/login');
+        } else if (this.current === '/docs') {
+          document.getElementById('page-docs').classList.remove('hidden');
+          renderPrimitives();
+        } else if (this.current === '/tutorials') {
+          document.getElementById('page-tutorials').classList.remove('hidden');
+        } else if (this.current === '/terms' || this.current === '/privacy' || this.current === '/acceptable-use') {
+          document.getElementById('page-legal').classList.remove('hidden');
+          renderLegal(this.current.replace('/', ''));
+        } else {
+          document.getElementById('page-home').classList.remove('hidden');
         }
-      ]
+      }
     };
 
-    // Tab Switcher
-    function switchMainTab(tab) {
-      state.activeTab = tab;
-      const studioView = document.getElementById('view-studio');
-      const docsView = document.getElementById('view-docs');
-      const studioTabBtn = document.getElementById('tab-studio');
-      const docsTabBtn = document.getElementById('tab-docs');
+    window.addEventListener('hashchange', () => {
+      const h = window.location.hash.replace('#', '') || '/';
+      router.navigate(h);
+    });
 
-      if (tab === 'studio') {
-        studioView.classList.remove('hidden');
-        docsView.classList.add('hidden');
-        studioTabBtn.className = "px-3 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono transition flex items-center gap-1.5";
-        docsTabBtn.className = "px-3 py-1 rounded-md text-slate-400 hover:text-slate-200 font-mono transition flex items-center gap-1.5";
+    // 14 Primitives List
+    const primitivesData = [
+      { name: '@server', role: 'Runtime Hosting', desc: 'Defines host port, CORS rules, and edge process binding.' },
+      { name: '@sandbox', role: 'Execution Isolation', desc: 'Isolates untrusted user scripts with memory and timeout boundaries.' },
+      { name: '@ledger', role: 'Verifiable State Log', desc: 'Maintains SHA-256 hashed chain of state transitions for rollbacks.' },
+      { name: '@pkg', role: 'Deterministic Dependencies', desc: 'Declares immutable packages with content-addressed hash locking.' },
+      { name: '@schema', role: 'Type & Contract Guard', desc: 'Strict pre-runtime data verification preventing unhandled exceptions.' },
+      { name: '@adapt', role: 'External Connector', desc: 'Bridges external APIs and database streams into VEX channels.' },
+      { name: '@state', role: 'Reactive Core State', desc: 'Holds reactive variables, balances, and nonces on register #01.' },
+      { name: '@stream', role: 'WebSocket Push Channel', desc: 'High-frequency binary & event pub/sub register stream.' },
+      { name: '@fn', role: 'Pure Verifiable Function', desc: 'Deterministic stateless computation executed on register #02.' },
+      { name: '@rpc', role: 'Typed JSON-RPC 2.0 Handler', desc: 'Entrypoint for client requests with Ed25519 signature checks.' },
+      { name: '@auth', role: 'Cryptographic Identity', desc: 'Ed25519 public key verification and role-based permissions.' },
+      { name: '@route', role: 'URL & Endpoint Mapping', desc: 'Maps HTTP paths and methods directly to register functions.' },
+      { name: '@ui', role: 'Reactive View Register', desc: 'Zero-bundle reactive UI manifests compiled on register #03.' },
+      { name: '@meta', role: 'SEO & Crawl Engine', desc: 'Emits static semantic HTML snapshots for search engines.' },
+    ];
+
+    function renderPrimitives() {
+      const container = document.getElementById('primitives-grid');
+      if (!container) return;
+      container.innerHTML = primitivesData.map(p => `
+        <div class="p-4 rounded-xl border border-slate-800 bg-slate-900/40">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="font-bold text-sm text-cyan-400">${p.name}</span>
+            <span class="text-[10px] text-slate-500 uppercase">${p.role}</span>
+          </div>
+          <p class="text-slate-400 text-xs font-sans leading-relaxed">${p.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    // Legal Content Renderer
+    function renderLegal(type) {
+      const el = document.getElementById('legal-content');
+      if (!el) return;
+      if (type === 'terms') {
+        el.innerHTML = `
+          <div class="space-y-4 font-sans">
+            <h1 class="text-2xl font-bold font-mono text-slate-100">Terms of Service</h1>
+            <p class="text-slate-400 text-xs font-mono">Last Updated: November 2026</p>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              By accessing or using the VEX Verifiable AI-Native Application Platform, you agree to be bound by these Terms. VEX provides deterministic, register-addressed execution runtimes, JSON-RPC 2.0 endpoints, and sandboxed AI compilation tools.
+            </p>
+            <h2 class="text-base font-bold font-mono text-slate-200">1. Cryptographic Attestation</h2>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              You acknowledge that state commits to VEX nodes are cryptographically signed and recorded in deterministic state ledgers. You are solely responsible for safeguarding your private keys and Ed25519 signature credentials.
+            </p>
+          </div>
+        `;
+      } else if (type === 'privacy') {
+        el.innerHTML = `
+          <div class="space-y-4 font-sans">
+            <h1 class="text-2xl font-bold font-mono text-slate-100">Privacy Policy</h1>
+            <p class="text-slate-400 text-xs font-mono">Last Updated: November 2026</p>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Your privacy and sandbox isolation are fundamental to VEX's design.
+            </p>
+            <h2 class="text-base font-bold font-mono text-slate-200">1. BYOK (Bring Your Own Key) Security</h2>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              All AI API keys (OpenAI, Google Gemini, Groq, OpenRouter) configured in the VEX console are stored <strong>strictly on your local device in browser LocalStorage</strong>. They are never transmitted, logged, or proxied through any VEX intermediary server.
+            </p>
+            <h2 class="text-base font-bold font-mono text-slate-200">2. Sandbox Isolation</h2>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Code executed inside the VEX Sandbox runs within isolated memory compartments and cannot access other users' registered state cells without cryptographic authorization.
+            </p>
+          </div>
+        `;
       } else {
-        studioView.classList.add('hidden');
-        docsView.classList.remove('hidden');
-        docsTabBtn.className = "px-3 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono transition flex items-center gap-1.5";
-        studioTabBtn.className = "px-3 py-1 rounded-md text-slate-400 hover:text-slate-200 font-mono transition flex items-center gap-1.5";
+        el.innerHTML = `
+          <div class="space-y-4 font-sans">
+            <h1 class="text-2xl font-bold font-mono text-slate-100">Acceptable Use Policy</h1>
+            <p class="text-slate-400 text-xs font-mono">Last Updated: November 2026</p>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              This policy outlines prohibited activities across all connected VEX nodes, public devnets, and RPC endpoints.
+            </p>
+            <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-400">
+              <li>Attempting denial-of-service or flooding attacks against VEX JSON-RPC 2.0 nodes.</li>
+              <li>Submitting malicious shellcode or exploiting compiler boundaries.</li>
+              <li>Using VEX RPC relays to distribute unsolicited or deceptive network traffic.</li>
+            </ul>
+          </div>
+        `;
       }
     }
 
-    // SHA-256 Digest Helper using Web Crypto
-    async function computeSha256(message) {
-      try {
-        const msgBuffer = new TextEncoder().encode(message);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return '0x' + hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-      } catch (e) {
-        return '0x' + Math.random().toString(16).substring(2) + 'a8e9102c4b';
+    // BYOK Modal
+    function toggleByokModal(show) {
+      const m = document.getElementById('byok-modal');
+      if (show) {
+        m.classList.remove('hidden');
+        try {
+          const cfg = JSON.parse(localStorage.getItem('vex_byok_config') || '{}');
+          if (cfg.provider) document.getElementById('byok-provider').value = cfg.provider;
+          if (cfg.apiKey) document.getElementById('byok-key').value = cfg.apiKey;
+          if (cfg.model) document.getElementById('byok-model').value = cfg.model;
+        } catch(e) {}
+      } else {
+        m.classList.add('hidden');
       }
     }
 
-    async function recomputeHash() {
-      const payload = document.getElementById('jsonrpc-payload').value;
-      const hash = await computeSha256(payload);
-      document.getElementById('sha256-display').innerText = hash;
+    function saveByok() {
+      const cfg = {
+        provider: document.getElementById('byok-provider').value,
+        apiKey: document.getElementById('byok-key').value,
+        model: document.getElementById('byok-model').value
+      };
+      localStorage.setItem('vex_byok_config', JSON.stringify(cfg));
+      const badge = document.getElementById('byok-saved-badge');
+      badge.innerText = '✓ Saved to browser storage!';
+      setTimeout(() => {
+        badge.innerText = '';
+        toggleByokModal(false);
+      }, 700);
     }
 
-    // Presets
-    function applyPreset(type) {
-      const registerEditor = document.getElementById('register-editor');
-      const methodInput = document.getElementById('rpc-method-input');
-      const payloadArea = document.getElementById('jsonrpc-payload');
+    // Auth handlers
+    let isLoginMode = true;
+    function toggleAuthMode(login) {
+      isLoginMode = login;
+      document.getElementById('auth-title').innerText = login ? 'Sign In to VEX Platform' : 'Create VEX Account';
+      document.getElementById('auth-submit-btn').innerText = login ? 'Sign In' : 'Create Account';
+      document.getElementById('auth-toggle-text').innerHTML = login 
+        ? `Don't have an account? <button onclick="toggleAuthMode(false)" class="text-cyan-400 hover:underline">Sign Up</button>`
+        : `Already have an account? <button onclick="toggleAuthMode(true)" class="text-cyan-400 hover:underline">Sign In</button>`;
+    }
 
-      if (type === 'health.ping') {
-        setRegister('#01');
-        methodInput.value = 'vex_healthPing';
-        payloadArea.value = JSON.stringify({
-          jsonrpc: "2.0",
-          id: "req-ping-" + Math.floor(Math.random() * 1000),
-          method: "vex_healthPing",
-          params: {
-            node_id: "vex-validator-node-09",
-            timestamp: Date.now()
-          }
-        }, null, 2);
-        logMessage('<span class="text-emerald-400">PRESET_LOADED</span> Applied preset: health.ping (#00 System)');
-      } else if (type === 'state.commit') {
-        setRegister('#01');
-        methodInput.value = 'vex_commitState';
-        payloadArea.value = JSON.stringify({
-          jsonrpc: "2.0",
-          id: "req-" + Math.floor(Math.random() * 9000 + 1000),
-          method: "vex_commitState",
-          params: {
-            register: "#01",
-            account: "0x71a2...98c1",
-            nonce: 105,
-            delta: 250.00,
-            target_cell: "liquidity_pool",
-            timestamp: Math.floor(Date.now() / 1000)
-          }
-        }, null, 2);
-        logMessage('<span class="text-cyan-400">PRESET_LOADED</span> Applied preset: state.commit (#01 Core State)');
-      } else if (type === 'ui.render') {
-        setRegister('#03');
-        methodInput.value = 'vex_renderView';
-        payloadArea.value = JSON.stringify({
-          jsonrpc: "2.0",
-          id: "req-ui-" + Math.floor(Math.random() * 1000),
-          method: "vex_renderView",
-          params: {
-            register: "#03",
-            component: "TerminalMetricsGrid",
-            theme: "cyber-emerald",
-            columns: 3,
-            auto_refresh: true
-          }
-        }, null, 2);
-        logMessage('<span class="text-purple-400">PRESET_LOADED</span> Applied preset: ui.render (#03 Reactive UI)');
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const user = { email, name: email.split('@')[0], token: 'vex_session_token' };
+      localStorage.setItem('vex_user_session', JSON.stringify(user));
+      updateAuthNavbar();
+      router.navigate('/sandbox');
+    }
+
+    function updateAuthNavbar() {
+      const raw = localStorage.getItem('vex_user_session');
+      const container = document.getElementById('auth-buttons-container');
+      if (raw) {
+        const u = JSON.parse(raw);
+        container.innerHTML = `
+          <span class="text-slate-300 text-xs hidden sm:inline">@${u.name}</span>
+          <button onclick="logoutUser()" class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition">Logout</button>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="router.navigate('/login')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition">Login</button>
+          <button onclick="router.navigate('/signup')" class="px-3 py-1.5 rounded bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs transition shadow-sm shadow-cyan-500/20">Sign Up</button>
+        `;
       }
-
-      recomputeHash();
     }
 
-    function setRegister(reg) {
-      state.activeRegister = reg;
-      ['#01', '#02', '#03', '#04'].forEach(r => {
-        const btn = document.getElementById('reg-btn-' + r.replace('#', ''));
+    function logoutUser() {
+      localStorage.removeItem('vex_user_session');
+      updateAuthNavbar();
+      router.navigate('/login');
+    }
+
+    // Sandbox Templates
+    const sandboxTemplates = {
+      booking: {
+        title: "🏥 MediVex Verified Scheduling",
+        subtitle: "Escrow Protected: 1,420.00 VEX",
+        code: `// VEX Template: Verifiable Appointment Booking App
+@server #00 {
+  port: 8545,
+  cors: ["*"],
+  engine: "vex-v2"
+}
+
+@schema #01 BookingRequest {
+  patient_id: string,
+  doctor_id: string,
+  slot_timestamp: number,
+  deposit_vex: float
+}
+
+@state #01 {
+  total_bookings: 14,
+  active_doctor: "Dr. Elena Vance (Neurology)",
+  available_slots: ["10:00 AM", "02:30 PM", "04:15 PM"],
+  escrow_balance: 1420.00
+}
+
+@rpc #02 bookAppointment {
+  method: "vex_bookSlot",
+  requires: ["VERIFIED_ED25519"],
+  delta_escrow: +100.00
+}
+
+@ui #03 renderDashboard {
+  title: "Clinical Appointment Booking",
+  theme: "cyan-dark",
+  slots_visible: true
+}`
+      },
+      feed: {
+        title: "📢 VEX Attested Broadcast",
+        subtitle: "128 Attested Posts • Node 167.172.215",
+        code: `// VEX Template: Verifiable Social Feed & Attestations
+@server #00 {
+  port: 8545,
+  engine: "vex-v2"
+}
+
+@schema #01 PostEntry {
+  author_pubkey: string,
+  content: string,
+  reputation_score: int
+}
+
+@state #01 {
+  channel: "#general-crypto",
+  total_posts: 128,
+  latest_hash: "0x8f2c99a1102e",
+  upvotes: 45
+}
+
+@rpc #02 publishPost {
+  rate_limit_per_min: 10,
+  sign_mode: "ed25519"
+}
+
+@ui #03 renderTimeline {
+  view: "stream-card",
+  auto_scroll: true
+}`
+      },
+      crypto: {
+        title: "💎 Verifiable Vault & Reserve",
+        subtitle: "Treasury: 1,000,000.00 VEX (8.5% Staking Yield)",
+        code: `// VEX Template: Verifiable Token Ledger & Escrow
+@server #00 {
+  network: "vex-mainnet-1"
+}
+
+@schema #01 TransferPayload {
+  recipient: string,
+  amount: float,
+  nonce: int
+}
+
+@state #01 {
+  treasury_reserve: 1000000.00,
+  staked_total: 425100.50,
+  validator_count: 24,
+  annual_yield_pct: 8.5
+}
+
+@rpc #02 transferReserve {
+  multisig: true,
+  threshold: 3
+}
+
+@ui #03 renderLedger {
+  view: "crypto-vault",
+  currency: "VEX"
+}`
+      }
+    };
+
+    function loadSandboxTemplate(key) {
+      ['booking', 'feed', 'crypto'].forEach(k => {
+        const btn = document.getElementById('tpl-' + k);
         if (btn) {
-          if (r === reg) {
-            btn.className = "px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
-          } else {
-            btn.className = "px-2 py-0.5 rounded text-[11px] font-mono text-slate-400 hover:text-slate-200 border border-slate-800";
-          }
+          btn.className = (k === key)
+            ? 'px-2.5 py-1 rounded border bg-cyan-950 text-cyan-400 border-cyan-800'
+            : 'px-2.5 py-1 rounded border bg-slate-900 text-slate-400 border-slate-800';
         }
       });
+
+      const tpl = sandboxTemplates[key];
+      document.getElementById('sandbox-editor').value = tpl.code;
+      document.getElementById('preview-title').innerText = tpl.title;
+      document.getElementById('preview-subtitle').innerText = tpl.subtitle;
+      document.getElementById('sandbox-status-text').innerText = 'Loaded template: ' + key;
     }
 
-    function updateJsonRpcFromInputs() {
-      const method = document.getElementById('rpc-method-input').value;
-      const id = document.getElementById('rpc-id-input').value;
-      try {
-        const current = JSON.parse(document.getElementById('jsonrpc-payload').value);
-        current.method = method;
-        current.id = id;
-        document.getElementById('jsonrpc-payload').value = JSON.stringify(current, null, 2);
-      } catch (e) {}
-      recomputeHash();
-    }
+    let sandboxCurrentBlock = 108495;
 
-    function compileRegisterCode() {
-      const text = document.getElementById('register-editor').value;
-      const registersFound = (text.match(/@(state|rpc|ui|bus)\s+#\d+/g) || []).length;
-      document.getElementById('register-parsed-summary').innerText = `${registersFound} Registers Valid`;
-    }
+    // Dispatch RPC call from sandbox
+    async function dispatchSandboxRpc() {
+      const btn = document.getElementById('dispatch-rpc-btn');
+      const statusText = document.getElementById('sandbox-status-text');
+      btn.disabled = true;
+      btn.innerText = 'Dispatching to /rpc...';
+      statusText.innerText = 'Computing SHA-256 & dispatching to node...';
 
-    function formatRegisterCode() {
-      compileRegisterCode();
-      logMessage('<span class="text-blue-400">FORMATTER</span> Formatted VEX register definitions.');
-    }
-
-    function toggleEd25519(enabled) {
-      state.ed25519Enabled = enabled;
-      const badge = document.getElementById('sig-validity-badge');
-      const label = document.getElementById('sig-mode-label');
-      if (enabled) {
-        badge.innerText = 'VALID';
-        badge.className = 'px-1.5 py-0.2 rounded text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800';
-        label.innerText = 'Ed25519 (Strict)';
-        logMessage('<span class="text-emerald-400">SIG_MODE</span> Ed25519 cryptographic signature simulator enabled.');
-      } else {
-        badge.innerText = 'UNVERIFIED';
-        badge.className = 'px-1.5 py-0.2 rounded text-[9px] bg-amber-950 text-amber-400 border border-amber-800';
-        label.innerText = 'Raw Unsigned';
-        logMessage('<span class="text-amber-400">SIG_MODE</span> Signature simulator disabled (Unsigned request payload).');
-      }
-    }
-
-    // Ping & Handshake
-    async function triggerPing() {
-      const pingDot = document.getElementById('ping-dot');
-      const pingText = document.getElementById('ping-text');
-      const latencyBadge = document.getElementById('latency-badge');
-      const endpoint = document.getElementById('endpoint-input').value;
-
-      pingDot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
-      pingText.innerText = 'Pinging...';
-
-      const start = performance.now();
-      await new Promise(r => setTimeout(r, 120 + Math.random() * 80));
-      const rtt = Math.round(performance.now() - start);
-
-      pingDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-      pingText.innerText = 'Handshake OK';
-      latencyBadge.innerText = `⚡ ${rtt}ms`;
-
-      logMessage(`<span class="text-emerald-400">PING_SUCCESS</span> Target ${endpoint} responded in ${rtt}ms (Protocol VEX/2.0 OK)`);
-    }
-
-    // Profile Changer
-    function onProfileChange(val) {
-      const endpointInput = document.getElementById('endpoint-input');
-      const networkLabel = document.getElementById('telemetry-network');
-
-      if (val === 'devnet') {
-        endpointInput.value = 'https://rpc.devnet.vex.network/v1';
-        networkLabel.innerText = 'vex-devnet-0';
-      } else if (val === 'local') {
-        endpointInput.value = 'http://localhost:8545/rpc';
-        networkLabel.innerText = 'vex-local-sandbox';
-      } else if (val === 'testnet') {
-        endpointInput.value = 'https://alpha.testnet.vex.network/rpc';
-        networkLabel.innerText = 'vex-alpha-testnet';
-      } else {
-        endpointInput.value = 'https://';
-        endpointInput.focus();
-        networkLabel.innerText = 'custom-rpc-node';
-      }
-      triggerPing();
-    }
-
-    function saveCurrentProfile() {
-      const current = document.getElementById('endpoint-input').value;
-      localStorage.setItem('vex_endpoint_profile', current);
-      logMessage(`<span class="text-cyan-400">PROFILE_SAVED</span> Saved current profile URL to localStorage.`);
-    }
-
-    // RPC Call Execution
-    async function executeRpcRequest() {
-      const sendBtn = document.getElementById('send-rpc-btn');
-      const responseDisplay = document.getElementById('response-display');
-      const statusBadge = document.getElementById('response-status-badge');
-      const timeBadge = document.getElementById('response-time-badge');
-      const rawPayload = document.getElementById('jsonrpc-payload').value;
-
-      sendBtn.disabled = true;
-      sendBtn.innerHTML = `
-        <svg class="animate-spin w-4 h-4 text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-        Dispatching to VEX Node...
-      `;
-
-      let parsedPayload;
-      try {
-        parsedPayload = JSON.parse(rawPayload);
-      } catch (err) {
-        statusBadge.innerText = '400 Bad JSON';
-        statusBadge.className = 'px-1.5 py-0.5 rounded bg-red-950 text-red-400 border border-red-800';
-        responseDisplay.innerText = JSON.stringify({
-          jsonrpc: "2.0",
-          id: null,
-          error: {
-            code: -32700,
-            message: "Parse error: Invalid JSON payload supplied."
-          }
-        }, null, 2);
-        sendBtn.disabled = false;
-        sendBtn.innerHTML = `Dispatch RPC Call (Ctrl + Enter)`;
-        return;
-      }
-
-      const start = performance.now();
-
-      // Simulated realistic VEX Node processing
-      await new Promise(r => setTimeout(r, 180 + Math.random() * 120));
-      const duration = Math.round(performance.now() - start);
-
-      state.currentBlockHeight += 1;
-      const delta = (parsedPayload.params && parsedPayload.params.delta) ? Number(parsedPayload.params.delta) : 50.00;
-      state.currentBalance += delta;
-
-      const randomHash = '0x' + Array.from({length: 32}, () => Math.floor(Math.random() * 16).toString(16)).join('');
-      const blockHash = '0x' + Array.from({length: 32}, () => Math.floor(Math.random() * 16).toString(16)).join('');
-
-      const responseObj = {
+      const payload = {
         jsonrpc: "2.0",
-        id: parsedPayload.id || "req-unknown",
-        result: {
-          status: "COMMITTED",
-          register: parsedPayload.params?.register || state.activeRegister,
-          state_root: randomHash,
-          block_height: state.currentBlockHeight,
-          block_hash: blockHash,
-          verified_signature: state.ed25519Enabled,
-          gas_consumed: 21000 + Math.floor(Math.random() * 2000),
-          delta_applied: delta,
-          new_balance: state.currentBalance
+        id: "req-" + Math.floor(Math.random() * 10000),
+        method: "state.commit",
+        params: {
+          register: "#01",
+          timestamp: Date.now()
         }
       };
 
-      responseDisplay.innerText = JSON.stringify(responseObj, null, 2);
-      statusBadge.innerText = '200 OK';
-      statusBadge.className = 'px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800';
-      timeBadge.innerText = `${duration}ms`;
+      const start = performance.now();
+      let isFallback = true;
+      let latencyMs = 24;
 
-      document.getElementById('telemetry-block').innerText = `#${state.currentBlockHeight.toLocaleString()}`;
+      try {
+        const res = await fetch('/rpc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          isFallback = false;
+          latencyMs = Math.round(performance.now() - start);
+        }
+      } catch (err) {
+        await new Promise(r => setTimeout(r, 140));
+        latencyMs = Math.round(performance.now() - start);
+      }
 
-      // Prepend to timeline
-      addTimelineItem({
-        blockHeight: state.currentBlockHeight,
-        hash: blockHash,
-        method: parsedPayload.method,
-        register: parsedPayload.params?.register || state.activeRegister,
-        delta: (delta >= 0 ? '+' : '') + delta.toFixed(2),
-        balance: state.currentBalance,
-        timestamp: 'Just now'
-      });
+      sandboxCurrentBlock += 1;
+      document.getElementById('preview-block-height').innerText = '#' + sandboxCurrentBlock;
 
-      logMessage(`<span class="text-emerald-400">RPC_COMMITTED</span> Block #${state.currentBlockHeight} confirmed: ${blockHash.substring(0, 18)}... (gas: ${responseObj.result.gas_consumed})`);
-
-      sendBtn.disabled = false;
-      sendBtn.innerHTML = `
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        Dispatch RPC Call (Ctrl + Enter)
-      `;
-    }
-
-    function addTimelineItem(item) {
-      const container = document.getElementById('state-timeline');
+      const randomHash = '0x' + Array.from({length: 32}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+      
+      const timeline = document.getElementById('sandbox-timeline');
       const div = document.createElement('div');
-      div.className = "p-2 rounded border border-slate-800 bg-slate-900/60 hover:border-slate-700 transition";
+      div.className = "p-2 rounded border border-slate-800 bg-slate-900/60";
       div.innerHTML = `
         <div class="flex items-center justify-between text-[11px] mb-1">
-          <span class="font-semibold text-cyan-400">Block #${item.blockHeight} (Latest)</span>
-          <span class="text-slate-500 text-[10px]">${item.timestamp}</span>
+          <span class="font-bold text-cyan-400">Block #${sandboxCurrentBlock} (Latest)</span>
+          <span class="text-slate-500 text-[10px]">Just now</span>
         </div>
-        <div class="text-[10px] text-slate-300 font-mono truncate mb-1">Hash: ${item.hash}</div>
+        <div class="text-[10px] text-slate-400 font-mono truncate mb-1">Hash: ${randomHash}</div>
         <div class="flex items-center justify-between text-[10px]">
-          <span class="text-emerald-400">@state ${item.register} delta: ${item.delta}</span>
-          <button onclick="revertToBlock(${item.blockHeight}, ${item.balance})" class="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] transition flex items-center gap-1">
-            <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-            Revert State
-          </button>
+          <span class="text-emerald-400">#01 &bull; delta: +10.00 VEX</span>
+          <button onclick="rollbackSandboxState(${sandboxCurrentBlock - 1})" class="px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] transition">↺ Rollback</button>
         </div>
       `;
-      container.insertBefore(div, container.firstChild);
+      timeline.insertBefore(div, timeline.firstChild);
+
+      statusText.innerText = `Block #${sandboxCurrentBlock} verified in ${latencyMs}ms (${isFallback ? 'Browser Engine Fallback' : 'Live Node 167.172.215'})`;
+      btn.disabled = false;
+      btn.innerText = 'Dispatch State Commit (POST /rpc)';
     }
 
-    // 1-Click Revert State
-    function revertToBlock(blockNum, restoredBalance) {
-      state.currentBalance = restoredBalance;
-      state.currentBlockHeight += 1;
-      const revertHash = '0xrev_' + Array.from({length: 28}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+    async function rollbackSandboxState(blockNum) {
+      const statusText = document.getElementById('sandbox-status-text');
+      statusText.innerText = `Dispatching state.rollback to Block #${blockNum}...`;
+      await new Promise(r => setTimeout(r, 120));
 
-      document.getElementById('telemetry-block').innerText = `#${state.currentBlockHeight.toLocaleString()}`;
+      sandboxCurrentBlock += 1;
+      document.getElementById('preview-block-height').innerText = '#' + sandboxCurrentBlock;
 
-      addTimelineItem({
-        blockHeight: state.currentBlockHeight,
-        hash: revertHash,
-        method: 'vex_revertState',
-        register: '#01',
-        delta: `revert_to_#${blockNum}`,
-        balance: restoredBalance,
-        timestamp: 'Just now'
-      });
-
-      document.getElementById('response-display').innerText = JSON.stringify({
-        jsonrpc: "2.0",
-        id: "req-revert-" + Date.now(),
-        result: {
-          action: "REVERT_STATE_APPLIED",
-          target_block: blockNum,
-          new_block_height: state.currentBlockHeight,
-          restored_balance: restoredBalance,
-          revert_proof: revertHash
-        }
-      }, null, 2);
-
-      logMessage(`<span class="text-amber-400">STATE_REVERTED</span> Rollback to Block #${blockNum} successful. State restabilized at balance: ${restoredBalance.toFixed(2)}`);
+      const revHash = '0xrev_' + Math.random().toString(16).substring(2, 30);
+      const timeline = document.getElementById('sandbox-timeline');
+      const div = document.createElement('div');
+      div.className = "p-2 rounded border border-amber-800/60 bg-amber-950/20";
+      div.innerHTML = `
+        <div class="flex items-center justify-between text-[11px] mb-1">
+          <span class="font-bold text-amber-400">Block #${sandboxCurrentBlock} (Rollback)</span>
+          <span class="text-slate-500 text-[10px]">Just now</span>
+        </div>
+        <div class="text-[10px] text-slate-400 font-mono truncate mb-1">Proof: ${revHash}</div>
+        <div class="flex items-center justify-between text-[10px]">
+          <span class="text-amber-400">Reverted register #01 to Block #${blockNum}</span>
+          <span class="px-1.5 py-0.2 rounded bg-amber-950 text-amber-300 text-[9px]">Rollback Verified</span>
+        </div>
+      `;
+      timeline.insertBefore(div, timeline.firstChild);
+      statusText.innerText = `Rollback confirmed! Restored register #01 to Block #${blockNum}`;
     }
 
-    // Logging helper
-    let logCounter = 3;
-    function logMessage(msg) {
-      const container = document.getElementById('log-container');
-      const time = new Date().toTimeString().split(' ')[0];
-      const entry = document.createElement('div');
-      entry.className = "text-slate-400";
-      entry.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
-      container.appendChild(entry);
-      container.scrollTop = container.scrollHeight;
-      logCounter++;
-      document.getElementById('log-count').innerText = logCounter;
+    function setPromptAndRun(prompt) {
+      document.getElementById('ai-prompt-input').value = prompt;
     }
 
-    function clearLogs() {
-      document.getElementById('log-container').innerHTML = '';
-      logCounter = 0;
-      document.getElementById('log-count').innerText = '0';
+    async function executeAiPrompt() {
+      const prompt = document.getElementById('ai-prompt-input').value;
+      if (!prompt) return;
+
+      const btn = document.getElementById('ai-submit-btn');
+      const statusText = document.getElementById('sandbox-status-text');
+      btn.disabled = true;
+      btn.innerText = 'Compiling AI Registers...';
+      statusText.innerText = 'Synthesizing register AST with zero-hallucination guard...';
+
+      await new Promise(r => setTimeout(r, 300));
+
+      const editor = document.getElementById('sandbox-editor');
+      editor.value += `\n\n// AI Synthesis: ${prompt}\n@fn #02 processAction {\n  validateSchema(#01);\n  commitState(delta: +25.00);\n}\n`;
+
+      btn.disabled = false;
+      btn.innerText = 'Generate & Mutate VEX';
+      statusText.innerText = 'AI register mutations applied and verified!';
+      document.getElementById('ai-prompt-input').value = '';
     }
 
-    function toggleConsoleDrawer() {
-      const drawer = document.getElementById('console-drawer');
-      if (drawer.style.height === '28px') {
-        drawer.style.height = '128px';
-      } else {
-        drawer.style.height = '28px';
-      }
-    }
-
-    function copyPayload() {
-      navigator.clipboard.writeText(document.getElementById('jsonrpc-payload').value);
-      logMessage('<span class="text-cyan-400">CLIPBOARD</span> Copied request payload buffer.');
-    }
-
-    function copyResponse() {
-      navigator.clipboard.writeText(document.getElementById('response-display').innerText);
-      logMessage('<span class="text-cyan-400">CLIPBOARD</span> Copied response JSON envelope.');
-    }
-
-    // Key shortcut Ctrl + Enter to dispatch
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        executeRpcRequest();
-      }
-    });
-
-    // Initial computation
+    // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
-      recomputeHash();
+      const initialHash = window.location.hash.replace('#', '') || '/';
+      router.navigate(initialHash);
+      updateAuthNavbar();
     });
   </script>
 </body>

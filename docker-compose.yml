@@ -1,11 +1,12 @@
 version: '3.8'
 
 services:
-  vex-rpc-studio:
+  vex-platform:
     build: .
-    container_name: vex-rpc-studio
+    container_name: vex-platform
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
+      - VEX_RPC_TARGET=http://167.172.215/rpc

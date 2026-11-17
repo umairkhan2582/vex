@@ -1,21 +1,27 @@
 {
-  "name": "vex-rpc-studio",
+  "name": "vex-platform",
   "version": "2.4.0",
-  "description": "VEX Typed JSON-RPC 2.0 Developer Console & Register Studio",
-  "main": "server.js",
+  "private": true,
+  "description": "VEX Verifiable AI-Native Application Platform & Typed JSON-RPC 2.0 Engine",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "start": "node server.js",
-    "dev": "node server.js",
     "serve": "node server.js"
   },
-  "keywords": [
-    "vex",
-    "rpc",
-    "json-rpc",
-    "blockchain",
-    "developer-tools",
-    "crypto"
-  ],
-  "author": "Muhammad Khan <umairkhan.gym@gmail.com>",
-  "license": "MIT"
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
 }
