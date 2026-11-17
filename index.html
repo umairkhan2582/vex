@@ -34,7 +34,7 @@
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <!-- Brand Logo (Original from live production site) -->
-      <div class="flex items-center gap-2.5 cursor-pointer select-none" onclick="switchView('builder')">
+      <div class="flex items-center gap-2.5 cursor-pointer select-none" onclick="switchView(\'home\')" title="Return to VEX Home">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4l7 16 2-5 5-2L4 4z"></path>
@@ -61,7 +61,7 @@
       <!-- Right Action Group -->
       <div class="flex items-center space-x-2">
         <!-- ChatGPT Direct Connector Button -->
-        <button onclick="openModal('chatgptModal')" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100/80 text-emerald-800 transition flex items-center gap-1.5 text-xs font-semibold" title="ChatGPT / OpenAI Account Connector">
+        <button onclick="openModal('chatgptModal')" id="chatgptHeaderBtn" class="p-2 sm:px-2.5 sm:py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 transition flex items-center gap-1.5 text-xs font-semibold shrink-0" title="ChatGPT & OpenAI Direct Connector">
           <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
             <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5985 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4047-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.6069 1.4997-2.602-1.4997z"/>
           </svg>
@@ -439,10 +439,10 @@
     </div>
 
     <!-- Drawer Footer -->
-    <div class="p-4 border-t border-slate-200 bg-slate-50">
-      <button onclick="logout(); closeDrawer();" class="w-full py-2.5 bg-white border border-slate-200 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 rounded-xl text-xs font-bold text-slate-700 transition flex items-center justify-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-        <span>Sign Out Session</span>
+    <div class="p-4 border-t border-slate-200 bg-slate-50" id="drawerBottomAuthArea">
+      <button onclick="closeDrawer(); openModal('otpModal')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        <span>Sign In / Create Account</span>
       </button>
     </div>
   </aside>
@@ -1034,15 +1034,37 @@
       const emailEl = document.getElementById('drawerUserEmail');
       const statusEl = document.getElementById('drawerUserStatus');
       const badgeEl = document.getElementById('drawerAuthBadge');
-      if (emailEl) emailEl.innerText = email || 'developer@vex.io';
-      if (statusEl) statusEl.innerText = state.isLoggedIn ? 'Verified Developer' : 'Guest Developer';
-      if (badgeEl) {
-        if (state.isLoggedIn) {
+      const bottomBtn = document.getElementById('drawerBottomAuthArea');
+
+      if (state.isLoggedIn && email) {
+        if (emailEl) emailEl.innerText = email;
+        if (statusEl) statusEl.innerText = 'Verified Developer';
+        if (badgeEl) {
           badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800';
-          badgeEl.innerText = 'Verified';
-        } else {
+          badgeEl.innerText = 'Active';
+        }
+        if (bottomBtn) {
+          bottomBtn.innerHTML = `
+            <button onclick="logout()" class="w-full py-2.5 px-4 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Sign Out (${escapeHtml(email)})</span>
+            </button>
+          `;
+        }
+      } else {
+        if (emailEl) emailEl.innerText = 'Guest Developer (Not signed in)';
+        if (statusEl) statusEl.innerText = 'Guest Account';
+        if (badgeEl) {
           badgeEl.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800';
-          badgeEl.innerText = 'Unverified';
+          badgeEl.innerText = 'Guest';
+        }
+        if (bottomBtn) {
+          bottomBtn.innerHTML = `
+            <button onclick="closeDrawer(); openModal('otpModal');" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Sign In / Create Account</span>
+            </button>
+          `;
         }
       }
     }
@@ -1307,7 +1329,15 @@
 
         const active = this.getActive();
         if (active) {
-          this.switch(active.id);
+          if (state.isLoggedIn) {
+            this.switch(active.id);
+          } else {
+            // Render drawer & projects so they are ready, but stay on Hero section
+            this.renderDrawerProjects();
+            this.renderModalProjects();
+            document.getElementById('currentProjectTitle').innerText = active.title;
+            updateCodeAndPreview(active.code, active.vexCode);
+          }
         }
       }
     };
@@ -1468,6 +1498,7 @@
     async function executeSynthesis(promptText) {
       const prompt = (promptText || '').trim();
       if (!prompt) return;
+      switchView('builder');
       state.currentPrompt = prompt;
 
       let activeProj = ProjectStore.getActive();
@@ -1860,18 +1891,19 @@ window.addEventListener('error', function(e) {
     }
 
     function updateAuthUi(loggedIn, email) {
-      const btn = document.getElementById('navAuthBtn');
+      const btn = document.getElementById('authBtn') || document.getElementById('navAuthBtn');
       if (btn) {
         if (loggedIn) {
           btn.innerText = 'Sign Out';
           btn.onclick = logout;
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition';
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition shadow-xs';
         } else {
           btn.innerText = 'Sign In';
           btn.onclick = () => openModal('otpModal');
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-2xs transition';
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 transition shadow-xs';
         }
       }
+      updateDrawerProfile(email);
     }
 
     function logout() {
@@ -2050,10 +2082,20 @@ window.addEventListener('error', function(e) {
     }
 
     function switchView(view) {
+      const hero = document.getElementById('heroSection');
+      const playground = document.getElementById('playgroundSection');
+      const navBuilder = document.getElementById('nav-builder');
+
       if (view === 'builder') {
-        document.getElementById('playgroundSection')?.classList.remove('hidden');
-        document.getElementById('playgroundSection')?.classList.add('flex');
-        document.getElementById('heroSection')?.classList.add('hidden');
+        hero?.classList.add('hidden');
+        playground?.classList.remove('hidden');
+        playground?.classList.add('flex');
+        if (navBuilder) navBuilder.className = 'px-3 py-1.5 rounded-lg text-indigo-600 bg-indigo-50/80 font-semibold transition';
+      } else if (view === 'home' || view === 'hero') {
+        playground?.classList.add('hidden');
+        playground?.classList.remove('flex');
+        hero?.classList.remove('hidden');
+        if (navBuilder) navBuilder.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition';
       }
     }
 

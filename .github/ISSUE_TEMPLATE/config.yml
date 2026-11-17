@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: VEX Security & Zero-Knowledge BYOK Reports
+    url: mailto:safety@talkastranger.com
+    about: Please report security vulnerabilities privately.
+  - name: Genesis Node Community Discussions
+    url: http://167.172.215.253/
+    about: Test the live genesis node in real time.
